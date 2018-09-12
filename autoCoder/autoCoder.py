@@ -30,6 +30,9 @@ import numpy as np
 import tensorflow as tf
 from keras.utils import get_file
 
+sys.path.append(os.getcwd()+'/../lib')
+from collector_py import Collector_py
+
 ################# imports end
 
 if GUTENBERG:
@@ -130,7 +133,9 @@ def char_rnn_model(num_chars, num_layers, num_nodes=512, dropout=0.1):
     return model
     
 #srcs = find_python(random.__file__.rsplit('/', 1)[0])
-srcs_all = find_python('../../')
+#srcs_all = find_python('../../')
+#srcs_all = find_python('../')
+srcs_all = Collector_py('../').find('../')
 srcs = srcs_all[:999]
 
 print("step.0 PYTHON FILES working on:", len(srcs), " (from all found:",len(srcs_all),")")

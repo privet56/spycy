@@ -44,3 +44,6 @@ class Collector:
                 i += 1
             i += 1
         return ''.join(res) + st[start_text:]
+
+    def collect(self, source):
+        pass

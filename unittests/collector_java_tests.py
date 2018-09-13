@@ -54,8 +54,12 @@ class KnownValues(unittest.TestCase):
         assert len(java_str) > (len(java_str_without_mulitline_comment) + 9)
         assert len(java_str_without_mulitline_comment) > 9
 
-        
-
+        # s.index() throws if not found, s.find returns -1 if not found
+        assert java_str_without_mulitline_comment.find("//") < 0    #no one-liner comment
+        assert java_str_without_mulitline_comment.find("/*") < 0    #no multiline comment
+        assert java_str_without_mulitline_comment.find("*/") < 0    #no multiline comment
+        assert java_str_without_mulitline_comment.find("'c'") < 0   #no char (only ' ')
+        assert java_str_without_mulitline_comment.find('"a') < 0    #no string (only "  ")
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,28 +5,28 @@ from collector import Collector
 
 class Collector_py(Collector):
 
+    MAX_FILES_DEFAULT=9999999
     COMMENT_RE = re.compile('#.*')
 
-    def __init__(self, source):
-        Collector.__init__(self, source)
-        self.matches = None
-        self.python_code = None
-        self.py_chars = None
-        self.py_char_to_idx = None
+    def __init__(self, source, datadir):
+        Collector.__init__(self, source, datadir)
 
-    def collect(self, source):
-        self.read(self.find(source))
+    def collect(self, source, max_files=MAX_FILES_DEFAULT):
+        self.read(self.find(source, max_files))
 
-    def find(self, source):
-        self.matches = []
-        for root, dirnames, filenames in os.walk(source):
+    def find(self, source, max_files=MAX_FILES_DEFAULT):
+        self.aSRCs = []
+        for root, _, filenames in os.walk(source):
             for fn in filenames:
                 if fn.endswith('.py'):
-                    self.matches.append(os.path.join(root, fn))
-        return self.matches
+                    self.aSRCs.append(os.path.join(root, fn))
+                    if(len(self.aSRCs) > max_files):
+                        print("max srcs ({0}) reached -> abort traversing dirs...", max_files)
+                        break
+        return self.aSRCs
     
     def read(self, srcs):
-        self.python_code = []
+        acode = []
         for fn in srcs:
             try:
                 with open(fn, 'r') as fin:
@@ -35,8 +35,11 @@ class Collector_py(Collector):
                 print('Could not read %s' % fn)
             src = Collector.replace_literals(src)
             src = Collector_py.COMMENT_RE.sub('', src)
-            self.python_code.append(src)
+            acode.append(src)
 
-        self.python_code = '\n\n\n'.join(self.python_code)
-        self.py_chars = list(sorted(set(self.python_code)))
-        self.py_char_to_idx = {ch: idx for idx, ch in enumerate(self.py_chars)}
+        self.sCode = '\n'.join(acode).strip()
+        self.lChars = list(sorted(set(self.sCode)))
+        self.dChars2idx = {ch: idx for idx, ch in enumerate(self.lChars)}
+
+    def writeCollectedData(self):
+        return Collector.writeCollectedData(self, "py")

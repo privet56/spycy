@@ -49,7 +49,7 @@ class Collector_java(Collector):
             src = Collector_java.replace_all_comments_and_literals(src)
             acode.append(src)
 
-        self.sCode = '\n'.join(acode).strip()
+        self.sCode = '\n\n\n'.join(acode).strip()
         self.lChars = list(sorted(set(self.sCode)))
         self.dChars2idx = {ch: idx for idx, ch in enumerate(self.lChars)}
 
@@ -57,3 +57,6 @@ class Collector_java(Collector):
         return Collector.writeCollectedData(self, "java")
     def loadCollectedData(self):
         return Collector.loadCollectedData(self, "java")
+
+    def startWith(self):
+        return '\npublic class '

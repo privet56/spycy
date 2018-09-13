@@ -5,6 +5,8 @@ class Collector:
 
     PICKLE_FILENAME_POSTFIX = ".collector.pickle"
 
+    SRC_SEPARATOR = '\n\n'
+
     '''
     base class collector with basic functions
     to be extended
@@ -27,6 +29,9 @@ class Collector:
         return value
 
     def collect(self, source):
+        pass
+
+    def startWith(self):
         pass
 
     def writeCollectedData(self, prefix):

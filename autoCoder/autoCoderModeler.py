@@ -28,8 +28,8 @@ class AutoCoderModeler:
         self.prefix = prefix
         self.model = None
 
-    def generate_code(self, model, collector, start_with='\ndef ', end_with='\n\n', diversity=1.0):
-        generated = start_with
+    def generate_code(self, model, collector, end_with=Collector.SRC_SEPARATOR, diversity=1.0):
+        generated = collector.startWith()
         yield generated
         for i in range(2000):
             x = np.zeros((1, len(generated), len(collector.lChars)))

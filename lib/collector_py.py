@@ -64,7 +64,7 @@ class Collector_py(Collector):
             src = Collector_py.COMMENT_RE.sub('', src)
             acode.append(src)
 
-        self.sCode = '\n'.join(acode).strip()
+        self.sCode = '{0}{0}'.format(Collector.SRC_SEPARATOR).join(acode).strip()
         self.lChars = list(sorted(set(self.sCode)))
         self.dChars2idx = {ch: idx for idx, ch in enumerate(self.lChars)}
 
@@ -72,3 +72,6 @@ class Collector_py(Collector):
         return Collector.writeCollectedData(self, "py")
     def loadCollectedData(self):
         return Collector.loadCollectedData(self, "py")
+
+    def startWith(self):
+        return '\ndef '

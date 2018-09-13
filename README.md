@@ -10,8 +10,8 @@
 
 	Model generation of ~40.000 files takes 6 days (without GPU). The generated keras model file is x MB big.
 
-	<img src="vsc.python.editor.png" width="350">
-	<img src="autoCoder/modelgeneration.resource.utilization.png" width="350">
+<img src="vsc.python.editor.png" width="350">
+<img src="autoCoder/modelgeneration.resource.utilization.png" width="350">
 
 ### jupyter
 	

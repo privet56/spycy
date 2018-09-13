@@ -3,17 +3,21 @@ import argparse
 sys.path.append(os.getcwd()+'/../lib')
 from autoCoderModeler import AutoCoderModeler
 from collector_py import Collector_py
+from collector_java import Collector_java
 from logger import Logger
 
 logger = None
 
 def getCollector(prefix, source, datadir):
-    collector = Collector_py(source, datadir)   #//TODO: choose class based on prefix
-    return collector
+    if(prefix == 'py'):
+        return Collector_py(source, datadir)   #//TODO: choose class based on prefix with __import__('Collector_'+prefix)
+    if(prefix == 'java'):
+        return Collector_java(source, datadir)
+    raise ValueError("invalid prefix:'"+prefix+"'")
 
 def train(prefix, epochs, datadir, source, max_file_count):
     collector = getCollector(prefix, source, datadir)
-    logger.log("train-step.1: collecting...", True)
+    logger.log("train-step.1: collecting...", False)
     collector.collect(source, max_file_count)
     collector.writeCollectedData()
     autoCoderModeler = AutoCoderModeler(prefix, source, datadir)
@@ -42,7 +46,7 @@ if __name__ == '__main__':
     #python autoCoder.py --mode=train prefix=py epochs=2 datadir=data source=../ max_file_count=99
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode'            , type=str, default='test',    help='specify mode: {0} or {1}'.format(MODE_TRAIN, MODE_TEST), choices=[MODE_TRAIN,MODE_TEST])
-    parser.add_argument('--prefix'          , type=str,                    help='specify prefix of which files should be read, eg py or java')
+    parser.add_argument('--prefix'          , type=str,                    help='specify prefix of which files should be read, eg py or java', choices=['py','java'])
     parser.add_argument('--epochs'          , type=int, default=40,        help='specify train epochs')
     parser.add_argument('--datadir'         , type=str,                    help='specify dir of data-model')
     parser.add_argument('--source'          , type=str,                    help='specify dir of source data')

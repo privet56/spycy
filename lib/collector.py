@@ -26,33 +26,6 @@ class Collector:
             return ' '
         return value
 
-    @staticmethod
-    # replace possible several lines long comments with style a la ''' ... '''
-    def replace_literals(st):
-        res = []
-        start_text = start_quote = i = 0
-        quote = ''
-        while i < len(st):
-            if quote:
-                if st[i: i + len(quote)] == quote:
-                    quote = ''
-                    start_text = i
-                    res.append(Collector.replacer(st[start_quote: i]))
-            elif st[i] in '"\'':
-                quote = st[i]
-                if i < len(st) - 2 and st[i + 1] == st[i + 2] == quote:
-                    quote = 3 * quote
-                start_quote = i + len(quote)
-                res.append(st[start_text: start_quote])
-            if st[i] == '\n' and len(quote) == 1:
-                start_text = i
-                res.append(quote)
-                quote = ''
-            if st[i] == '\\':
-                i += 1
-            i += 1
-        return ''.join(res) + st[start_text:]
-
     def collect(self, source):
         pass
 

@@ -8,7 +8,9 @@
 ### program learns to program; generates program code automatically.
 	Scripts read in source code files of a certain type, generates a Keras model of it, so that it can generate new code itself.
 
-	Model generation of ~40.000 files takes 6 days (without GPU). The generated keras model file is x MB big.
+	Model generation based on 200 code files(in sum 800 KB) takes about 1 hour (without GPU). The generated keras model file is ~40 MB big.
+
+	Model generation based on ~40.000 code files takes about a week (without GPU). The generated keras model file is x MB big.
 
 <img src="vsc.python.editor.png" width="550">
 <img src="autoCoder/modelgeneration.resource.utilization.png" width="550">

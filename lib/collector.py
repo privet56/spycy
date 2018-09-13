@@ -83,7 +83,7 @@ class Collector:
         self.dChars2idx = None
 
         with open(os.path.join(self.datadir, prefix + Collector.PICKLE_FILENAME_POSTFIX), 'rb', ) as p:
-            dict = pickle.load(self, p, protocol=pickle.HIGHEST_PROTOCOL)
+            dict = pickle.load(p)
         self.__dict__.update(dict)
 
         assert self.sCode != None

@@ -43,3 +43,5 @@ class Collector_py(Collector):
 
     def writeCollectedData(self):
         return Collector.writeCollectedData(self, "py")
+    def loadCollectedData(self):
+        return Collector.loadCollectedData(self, "py")

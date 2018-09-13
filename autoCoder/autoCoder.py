@@ -25,7 +25,7 @@ def train(prefix, epochs, datadir, source, max_file_count):
     autoCoderModeler.fit(collector, batch_size=256, epochs=epochs)
     logger.log("train-step.1: save model...", True)
     autoCoderModeler.save()
-    logger.log("FINISH!!!", True)
+    logger.log("FINISHED TRAIN", True)
 
 def test(prefix, datadir):
     source = datadir
@@ -37,15 +37,16 @@ def test(prefix, datadir):
     autoCoderModeler.load()
     logger.log("test-step.3: generating code...", True)
     autoCoderModeler.generateCode(collector, 3, prefix, stdout=True)
-    logger.log("FINISH!!!", True)
+    logger.log("FINISHED TEST", True)
 
 MODE_TRAIN = 'train'
 MODE_TEST  = 'test'
+MODE_TRAIN_AND_TEST = 'train_and_test'
 
 if __name__ == '__main__':
     #python autoCoder.py --mode=train prefix=py epochs=2 datadir=data source=../ max_file_count=99
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode'            , type=str, default='test',    help='specify mode: {0} or {1}'.format(MODE_TRAIN, MODE_TEST), choices=[MODE_TRAIN,MODE_TEST])
+    parser.add_argument('--mode'            , type=str, default='test',    help='specify mode: {0} or {1} or {2}'.format(MODE_TRAIN, MODE_TEST, MODE_TRAIN_AND_TEST), choices=[MODE_TRAIN,MODE_TEST, MODE_TRAIN_AND_TEST])
     parser.add_argument('--prefix'          , type=str,                    help='specify prefix of which files should be read, eg py or java', choices=['py','java'])
     parser.add_argument('--epochs'          , type=int, default=40,        help='specify train epochs')
     parser.add_argument('--datadir'         , type=str,                    help='specify dir of data-model')
@@ -56,9 +57,7 @@ if __name__ == '__main__':
     logger = Logger(args.prefix, args.datadir)
     logger.log("START "+args.mode+"ing "+str(sys.argv))
 
-    if(args.mode == MODE_TRAIN):
+    if((args.mode == MODE_TRAIN) or (args.mode == MODE_TRAIN_AND_TEST)):
         train(args.prefix, args.epochs, args.datadir, args.source, args.max_file_count)
-    elif(args.mode == MODE_TEST):
+    if((args.mode == MODE_TEST) or (args.mode == MODE_TRAIN_AND_TEST)):
         test(args.prefix, args.datadir)
-    else:
-        logger.log("ERR: unknown mode!")

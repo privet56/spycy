@@ -6,8 +6,11 @@ from collector import Collector
 class Collector_java(Collector):
 
     MAX_FILES_DEFAULT=9999999
-    COMMENT_RE = re.compile('//.*')
-    MULTILINE_COMMENT_RE = re.compile("/\*.*?\*/",re.DOTALL)
+
+    CHAR_RE = re.compile(r'\'.\'')                                  #eg 'ß'
+    STRING_RE = re.compile(r'".*?"')                                #eg "ß"
+    COMMENT_RE = re.compile('//.*')                                 #eg //comment
+    MULTILINE_COMMENT_RE = re.compile("/\*.*?\*/",re.DOTALL)        #eg /*comment*/
 
     def __init__(self, source, datadir):
         Collector.__init__(self, source, datadir)
@@ -22,14 +25,18 @@ class Collector_java(Collector):
                 if fn.endswith('.java'):
                     self.aSRCs.append(os.path.join(root, fn))
                     if(len(self.aSRCs) > max_files):
-                        print("max srcs(.java) ({0}) reached -> abort traversing dirs...", max_files)
+                        print("max srcs(.java) ("+str(max_files)+") reached -> abort traversing dirs...")
                         return self.aSRCs
         return self.aSRCs
 
     @staticmethod
-    # replace mulitline comments
-    def replace_literals(src):
-        return Collector_java.MULTILINE_COMMENT_RE.sub('', src)
+    # replace all comments and literals
+    def replace_all_comments_and_literals(src):
+        src = Collector_java.MULTILINE_COMMENT_RE.sub('', src)
+        src = Collector_java.COMMENT_RE.sub('', src)
+        src = Collector_java.STRING_RE.sub('"  "', src)
+        src = Collector_java.CHAR_RE.sub('\' \'', src)
+        return src
     
     def read(self, srcs):
         acode = []
@@ -39,8 +46,7 @@ class Collector_java(Collector):
                     src = fin.read()
             except UnicodeDecodeError:
                 print('Could not read %s' % fn)
-            src = Collector_java.replace_literals(src)
-            src = Collector_java.COMMENT_RE.sub('', src)
+            src = Collector_java.replace_all_comments_and_literals(src)
             acode.append(src)
 
         self.sCode = '\n'.join(acode).strip()

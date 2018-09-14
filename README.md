@@ -1,5 +1,6 @@
 # Spycy
-## spicy python machine learning & AI recipes: AutoCoder (Code-Generator) and TalkFellow
+## spicy python machine learning & AI recipes:
+## AutoCoder (Code-Generator) and TalkFellow (Chat Bot)
 
 ### VSCode plugins
 	Python 3
@@ -8,16 +9,23 @@
 ### program learns to program; generates program code automatically.
 	Scripts read in source code files of a certain type, generates a Keras model of it, so that it can generate new code itself.
 
-	Model generation based on 1000 code files(in sum 5 MB) and 22 epochs takes about 12 hour (without GPU). The generated keras model file is ~40 MB big.
+	Model generation based on 1000 code files(in sum 5 MB) and 22 epochs takes about 12 hour (without GPU!). The generated keras model file is ~40 MB big.
 	
-##### VS Code with Python IntelliSense
+##### VS Code with Python IntelliSense:
 <img src="vsc.python.editor.png" width="550">
-##### Resource Utilization during training
+
+##### Resource Utilization during training:
 <img src="autoCoder/modelgeneration.resource.utilization.png" width="550">
-##### Auto-Generated Java Code (based on a very small pretrained model)
+
+##### Auto-Generated Java Code examples (based on a very small pretrained model):
 <img src="autoCoder/program.generated.java.code.png" width="550">
 
-#### jupyter
+##### TODO:
+	Train larger model
+	Save train options with pretty format (indent)
+	Compile Tensorflow with AVX & AVX2 support.
+
+#### Jupyter:
 Use Jupyter Notebooks for data exploration
 
 ## 2.: TalkFellow
@@ -45,7 +53,7 @@ Use Jupyter Notebooks for data exploration
 #### Execution
 	..\..\venvs\talkFellow\Scripts\Activate.ps1
 
-### Setup - with conda:
+### Setup - with Anaconda (conda, for Windows):
 	cd talkFellow
 
 	optional - use a virtual environment

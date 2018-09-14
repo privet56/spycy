@@ -115,13 +115,13 @@ class AutoCoderModeler:
         # save a Keras model into a single HDF5 file
         self.model.save(self.getModelPathName())
 
-        #//TODO: save only train options
+        # saves train options / config:
+        with open(self.getModelPathName()+".json", "w") as json_file:
+            json_file.write(self.model.to_json())   #//TODO: pretty_format|pretty_print|indent=2 & encoding='utf-8'
+
+        #//alternative saving of train options
         #model_config = self.model.get_config()
         #model_config_json = json.loads(model_config.decode('utf-8'))
-
-        # alternative:
-        with open(self.getModelPathName()+".json", "w") as json_file:
-            json_file.write(self.model.to_json())
 
     def load(self):
         

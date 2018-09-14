@@ -1,0 +1,8 @@
+*
+/data*
+
+!__init__.py
+!talkfellow.py
+!tensorflowchecker.py
+!.gitignore
+!.requirements.txt

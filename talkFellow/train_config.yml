@@ -1,0 +1,20 @@
+model_params:
+  vocab_source: ../../spycy/talkFellow/data/gutenberg.tok
+  vocab_target: ../../spycy/talkFellow/data/gutenberg.tok
+
+input_pipeline_train:
+  class: ParallelTextInputPipeline
+  params:
+    source_files:
+      - ../../spycy/talkFellow/data/train/sources.txt
+    target_files:
+      - ../../spycy/talkFellow/data/train/targets.txt
+
+input_pipeline_dev:
+  class: ParallelTextInputPipeline
+  params:
+    source_files:
+    - ../../spycy/talkFellow/data/dev/sources.txt
+    target_files:
+    - ../../spycy/talkFellow/data/dev/targets.txt
+

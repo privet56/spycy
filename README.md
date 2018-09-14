@@ -89,4 +89,4 @@ Use Jupyter Notebooks for data exploration
 
 		pip install --ignore-installed --upgrade d:\projects\spycy\libs\tensorflow-1.4.0-cp36-cp36m-win_amd64.whl
 		(from https://github.com/fo40225/tensorflow-windows-wheel/blob/master/1.4.0/py36/CPU/avx2/tensorflow-1.4.0-cp36-cp36m-win_amd64.whl)
-
+		(...and possibly you have to reinstall keras in the required version)

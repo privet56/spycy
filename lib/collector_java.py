@@ -5,8 +5,6 @@ from collector import Collector
 
 class Collector_java(Collector):
 
-    MAX_FILES_DEFAULT=9999999
-
     CHAR_RE = re.compile(r'\'.\'')                                  #eg 'ß'
     STRING_RE = re.compile(r'".*?"')                                #eg "ß"
     COMMENT_RE = re.compile('//.*')                                 #eg //comment
@@ -15,18 +13,11 @@ class Collector_java(Collector):
     def __init__(self, source, datadir):
         Collector.__init__(self, source, datadir)
 
-    def collect(self, source, max_files=MAX_FILES_DEFAULT):
+    def collect(self, source, max_files=Collector.MAX_FILES_DEFAULT):
         self.read(self.find(source, max_files))
 
-    def find(self, source, max_files=MAX_FILES_DEFAULT):
-        self.aSRCs = []
-        for root, _, filenames in os.walk(source):
-            for fn in filenames:
-                if fn.endswith('.java'):
-                    self.aSRCs.append(os.path.join(root, fn))
-                    if(len(self.aSRCs) > max_files):
-                        print("max srcs(.java) ("+str(max_files)+") reached -> abort traversing dirs...")
-                        return self.aSRCs
+    def find(self, source, max_files=Collector.MAX_FILES_DEFAULT):
+        self.aSRCs = Collector.find(self, source, '.java', max_files=max_files)
         return self.aSRCs
 
     @staticmethod

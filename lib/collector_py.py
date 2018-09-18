@@ -41,15 +41,8 @@ class Collector_py(Collector):
     def collect(self, source, max_files=MAX_FILES_DEFAULT):
         self.read(self.find(source, max_files))
 
-    def find(self, source, max_files=MAX_FILES_DEFAULT):
-        self.aSRCs = []
-        for root, _, filenames in os.walk(source):
-            for fn in filenames:
-                if fn.endswith('.py'):
-                    self.aSRCs.append(os.path.join(root, fn))
-                    if(len(self.aSRCs) > max_files):
-                        print("max srcs ({0}) reached -> abort traversing dirs...", max_files)
-                        return self.aSRCs
+    def find(self, source, max_files=Collector.MAX_FILES_DEFAULT):
+        self.aSRCs = Collector.find(self, source, '.py', max_files=max_files)
         return self.aSRCs
     
     def read(self, srcs):

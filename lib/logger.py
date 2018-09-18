@@ -1,4 +1,11 @@
 import os, sys, time
+import enum
+
+@enum.unique
+class LogLevel(enum.Enum):
+    INF = "INF "
+    WRN = "WRN "
+    ERR = "ERR "
 
 class Logger:
 
@@ -10,6 +17,13 @@ class Logger:
         assert self.prefix != None
 
         self.lasttime = time.time()
+
+    def inf(self, str, bWithElapsedTime=False):
+        self.log(LogLevel.INF + str, bWithElapsedTime=bWithElapsedTime)
+    def wrn(self, str, bWithElapsedTime=False):
+        self.log(LogLevel.WRN + str, bWithElapsedTime=bWithElapsedTime)
+    def err(self, str, bWithElapsedTime=False):
+        self.log(LogLevel.ERR + str, bWithElapsedTime=bWithElapsedTime)
 
     def log(self, str, bWithElapsedTime=False):
         sElapsedTime = ''

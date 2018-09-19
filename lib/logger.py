@@ -7,7 +7,12 @@ class LogLevel(enum.Enum):
     WRN = "WRN "
     ERR = "ERR "
 
+    def __str__(self):
+        return '{0}'.format(self.value)
+
 class Logger:
+
+    PREFIX4ONLY_STDOUT = "*"
 
     def __init__(self, prefix, datadir):
         self.datadir = datadir
@@ -19,27 +24,33 @@ class Logger:
         self.lasttime = time.time()
 
     def inf(self, str, bWithElapsedTime=False):
-        self.log(repr(LogLevel.INF) + str, bWithElapsedTime=bWithElapsedTime)
+        return self.log(LogLevel.INF.value + str, bWithElapsedTime=bWithElapsedTime)
     def wrn(self, str, bWithElapsedTime=False):
-        self.log(repr(LogLevel.WRN) + str, bWithElapsedTime=bWithElapsedTime)
+        return self.log(LogLevel.WRN.value + str, bWithElapsedTime=bWithElapsedTime)
     def err(self, str, bWithElapsedTime=False):
-        self.log(repr(LogLevel.ERR) + str, bWithElapsedTime=bWithElapsedTime)
+        return self.log(LogLevel.ERR.value + str, bWithElapsedTime=bWithElapsedTime)
 
     def log(self, str, bWithElapsedTime=False):
         sElapsedTime = ''
+        logged = ''
         if(bWithElapsedTime):
             elapsed_time = time.time() - self.lasttime
             sElapsedTime = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
             sElapsedTime = '   (prev step took ' + sElapsedTime + ' secs)'
-            self._log('{0:<55} {1:>33}'.format(str, sElapsedTime))
+            logged = self._log('{0:<55} {1:>33}'.format(str, sElapsedTime))
         else:
-            self._log(str)
+            logged = self._log(str)
 
         self.lasttime = time.time()
+
+        return logged
 
     def _log(self, str):
 
         print(str)
 
-        with open(os.path.join(self.datadir,'{0}.log'.format(self.prefix)), "a") as log_file:
-            log_file.write(str+'\n')
+        if(self.prefix != self.PREFIX4ONLY_STDOUT):
+            with open(os.path.join(self.datadir,'{0}.log'.format(self.prefix)), "a") as log_file:
+                log_file.write(str+'\n')
+
+        return str

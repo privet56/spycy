@@ -106,6 +106,16 @@ class CollectorGutenberg(Collector):
         st = st.lower().replace('_', ' ')
         return ' '.join(self.RE_TOKEN.findall(st))
 
+    def ansify(self, txt):
+        #TODO: leave accents and remove only strange characters, like \u20b0, see Collector:remove_non_ansi(text)
+        unaccented_string = unidecode.unidecode(txt)
+        txt = unaccented_string
+
+        for ch1, ch2 in self.LATIN_1_CHARS:
+            txt = txt.replace(ch1, ch2)
+            
+        return txt
+
     def collect(self, source, max_files, gutenbergbookids):
 
         downloaded_books = 0
@@ -116,12 +126,8 @@ class CollectorGutenberg(Collector):
             try:
                 txt = strip_headers(load_etext(gutenbergbookid)).strip()
 
-                #TODO: leave accents and remove only strange characters, like \u20b0, see Collector:remove_non_ansi(text)
-                unaccented_string = unidecode.unidecode(txt)
-                txt = unaccented_string
+                txt = self.ansify(txt)
 
-                for ch1, ch2 in self.LATIN_1_CHARS:
-                    txt = txt.replace(ch1, ch2)
                 conversations += self.extract_conversations(txt)
                 downloaded_books = downloaded_books + 1
 

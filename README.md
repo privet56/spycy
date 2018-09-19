@@ -82,6 +82,10 @@ Use Jupyter Notebooks for data exploration
 #### Execution (here an example chat with the bot in German)
 <img src="talkFellow/talkfellow.chat.png" width="550">
 
+##### TODO:
+	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
+	
+
 ## Q&A
 	Message:
 		I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2

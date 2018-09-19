@@ -29,6 +29,10 @@ class Collector:
             return ' '
         return value
 
+    @staticmethod
+    def remove_non_ansi(text):
+        return ''.join([word for word in text if ord(word) < 128255])
+
     def collect(self, source):
         pass
 

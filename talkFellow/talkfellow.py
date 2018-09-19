@@ -35,10 +35,12 @@ def test(datadir, source):
     talkFellowModeler = TalkFellowModeler(source, datadir)
     logger.log("test-step.2: load model...", True)
     talkFellowModeler.load(datadir)
-    question = 'Hallo'
-    logger.log("test-step.3: start talking...(question:'"+question+"')", True)
-    answer = talkFellowModeler.talk('Hallo')
-    logger.log("test-step.4: answer:'"+answer+"'", True)
+    logger.log("test-step.2: start talking to fellow... (exit with 'q')", True)
+    talkFellowModeler.discuss()
+    #question = 'Hallo'
+    #logger.log("test-step.3: start talking...(question:'"+question+"')", True)
+    #answer = talkFellowModeler.talk('Hallo')
+    #logger.log("test-step.4: answer:'"+answer+"'", True)
     logger.log("FINISHED TEST", True)
 
 if __name__ == '__main__':

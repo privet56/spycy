@@ -71,6 +71,7 @@ class CollectorGutenberg(Collector):
 
     PARAGRAPH_SPLIT_RE = re.compile(r'\n *\n+')
     RE_TOKEN = re.compile(r'(\w+|\?)', re.UNICODE)
+    FILE_PREFIX = "conversations"
 
     # like constructor
     def __init__(self, source, datadir):
@@ -115,24 +116,22 @@ class CollectorGutenberg(Collector):
             try:
                 txt = strip_headers(load_etext(gutenbergbookid)).strip()
 
-                #TODO: leave accents and remove only strange characters, like \u20b0
+                #TODO: leave accents and remove only strange characters, like \u20b0, see Collector:remove_non_ansi(text)
                 unaccented_string = unidecode.unidecode(txt)
                 txt = unaccented_string
 
                 for ch1, ch2 in self.LATIN_1_CHARS:
                     txt = txt.replace(ch1, ch2)
                 conversations += self.extract_conversations(txt)
-                
-                #print(" ... len(conversations):", len(conversations), "downloaded_books:", downloaded_books, "download_book_failed:", download_book_failed)
-
                 downloaded_books = downloaded_books + 1
+
             except UnknownDownloadUriException:
                 download_book_failed = download_book_failed + 1
                 continue
 
         token_counter = Counter()
 
-        with open(os.path.join(self.datadir,'gutenberg.txt'), 'w') as fout:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt'), 'w') as fout:
             for conv in conversations:
                 fout.write('\n'.join(conv) + '\n\n')
                 for convlines in conv:
@@ -140,14 +139,14 @@ class CollectorGutenberg(Collector):
                     if line:
                         token_counter.update(self.RE_TOKEN.findall(line))
 
-        with open(os.path.join(self.datadir,'gutenberg.tok'), 'w') as fout:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.tok'), 'w') as fout:
             for token, count in token_counter.items():
                 fout.write('%s\t%d\n' % (token, count))
 
         pairs = []
         prev = None
 
-        with open(os.path.join(self.datadir,'gutenberg.txt')) as fin:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt')) as fin:
             for line in fin:
                 line = line.strip()
                 if line:

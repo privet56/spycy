@@ -80,7 +80,7 @@ Use Jupyter Notebooks for data exploration
 	conda install nltk
 
 ## Q&A
-	Message
+	Message:
 		I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
 	Solution:
 		Build tensorflow explicitely for your machine or install one with the CPU support from
@@ -90,3 +90,12 @@ Use Jupyter Notebooks for data exploration
 		pip install --ignore-installed --upgrade d:\projects\spycy\libs\tensorflow-1.4.0-cp36-cp36m-win_amd64.whl
 		(from https://github.com/fo40225/tensorflow-windows-wheel/blob/master/1.4.0/py36/CPU/avx2/tensorflow-1.4.0-cp36-cp36m-win_amd64.whl)
 		(...and possibly you have to reinstall keras in the required version)
+
+
+	Question:
+		How to install seq2seq?
+	Answer:
+		git clone https://github.com/google/seq2seq.git
+		cd seq2seq
+		# Install package and dependencies
+		pip install -e .

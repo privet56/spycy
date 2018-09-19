@@ -69,22 +69,21 @@ class TalkFellowModeler:
         self.logger = logger if logger else Logger(source, datadir)
 
     def fit(self, collector):
-        self.logger.err("NOTIMPL:"+str(self.__class__)+":"+Reflector.get_function_name())
 
-        '''
+        cmd = '''
         cd ../../3rdparty_libs/seq2seq
 
         python -m bin.train ^
         --batch_size 1024 --eval_every_n_steps 5000 ^
         --train_steps 5000000 ^
         --output_dir ../../spycy/talkFellow/data/model ^
-        --config_paths="./example_configs/nmt_large.yml,./example_configs/train_seq2seq.yml,../../spycy/talkFellow/data/gutenberg_train_config.yml"
+        --config_paths="./example_configs/nmt_large.yml,./example_configs/train_seq2seq.yml,../../spycy/talkFellow/data/conversations_train_config.yml"
         '''
 
-        '''
+        yml = '''
         model_params:
-        vocab_source: ../../spycy/talkFellow/data/gutenberg.tok
-        vocab_target: ../../spycy/talkFellow/data/gutenberg.tok
+        vocab_source: ../../spycy/talkFellow/data/conversations.tok
+        vocab_target: ../../spycy/talkFellow/data/conversations.tok
 
         input_pipeline_train:
         class: ParallelTextInputPipeline
@@ -102,6 +101,13 @@ class TalkFellowModeler:
             target_files:
             - ../../spycy/talkFellow/data/dev/targets.txt
         '''
+
+        self.logger.wrn("please:")
+        self.logger.wrn("  1) git clone seq2seq into ../../3rdparty_libs/seq2seq")
+        self.logger.wrn("  2) create /data/conversations_train_config.yml:--------------------\n"+yml+"\n--------------------")
+        self.logger.wrn("  3) execute:--------------------\n"+cmd+"\n--------------------")
+        self.logger.wrn("  4) wait ... (some days without GPU)")
+        self.logger.wrn("  5) adjust in /data/model/train_options.json vocab_source & vocab_target (they should be relative from this dir, both referencing ./data/conversations.tok")
 
     def _tokens_to_str(self, tokens):
         return " ".join(tokens).split("SEQUENCE_END")[0].strip()
@@ -133,8 +139,8 @@ class TalkFellowModeler:
 
         model(
             features={
-            "source_tokens": self.source_tokens_ph,
-            "source_len": self.source_len_ph
+                "source_tokens": self.source_tokens_ph,
+                "source_len": self.source_len_ph
             },
             labels=None,
             params={
@@ -167,3 +173,17 @@ class TalkFellowModeler:
             return self.prediction_dict.pop(self._tokens_to_str(source_tokens))
         else:
             return "no question, no answer!"
+
+    def discuss(self):
+        tf.reset_default_graph()
+
+        question = ''
+        while question != 'q':
+            question = input(">>> ")
+            source_tokens = question.split() + ["SEQUENCE_END"]
+            self.session.run([], {
+                self.source_tokens_ph: [source_tokens],
+                self.source_len_ph: [len(source_tokens)]
+            })
+            answer = self.prediction_dict.pop(self._tokens_to_str(source_tokens))
+            print(answer)

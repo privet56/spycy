@@ -1,6 +1,8 @@
 import os, sys, time
 import enum
 
+#alternative logging class to the standard builtin import logging & pprint
+
 @enum.unique
 class LogLevel(enum.Enum):
     INF = "INF "

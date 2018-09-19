@@ -19,11 +19,11 @@ class Logger:
         self.lasttime = time.time()
 
     def inf(self, str, bWithElapsedTime=False):
-        self.log(LogLevel.INF + str, bWithElapsedTime=bWithElapsedTime)
+        self.log(repr(LogLevel.INF) + str, bWithElapsedTime=bWithElapsedTime)
     def wrn(self, str, bWithElapsedTime=False):
-        self.log(LogLevel.WRN + str, bWithElapsedTime=bWithElapsedTime)
+        self.log(repr(LogLevel.WRN) + str, bWithElapsedTime=bWithElapsedTime)
     def err(self, str, bWithElapsedTime=False):
-        self.log(LogLevel.ERR + str, bWithElapsedTime=bWithElapsedTime)
+        self.log(repr(LogLevel.ERR) + str, bWithElapsedTime=bWithElapsedTime)
 
     def log(self, str, bWithElapsedTime=False):
         sElapsedTime = ''

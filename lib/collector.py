@@ -13,7 +13,7 @@ class Collector:
     to be extended
     '''
 
-    # like constructor
+    # like constructor(beside __new__)
     def __init__(self, source, datadir):
         self.source = source
         self.datadir = datadir

@@ -1,5 +1,5 @@
 /data*
-
+/__pycache__
 !__init__.py
 !talkfellow.py
 !tensorflowchecker.py

@@ -79,6 +79,9 @@ Use Jupyter Notebooks for data exploration
 
 	conda install nltk
 
+#### Execution (here an example chat with the bot in German)
+<img src="talkFellow/talkfellow.chat.png" width="550">
+
 ## Q&A
 	Message:
 		I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2

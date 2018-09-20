@@ -38,6 +38,8 @@ from logger import Logger
 
 class CollectorGutenberg(Collector):
 
+    FILE_PREFIX = "gutenbergconversations"
+
     LATIN_1_CHARS = (
         (u'\xe2\x80\x99', "'"),
         (u'\xc3\xa9', 'e'),
@@ -71,7 +73,6 @@ class CollectorGutenberg(Collector):
 
     PARAGRAPH_SPLIT_RE = re.compile(r'\n *\n+')
     RE_TOKEN = re.compile(r'(\w+|\?)', re.UNICODE)
-    FILE_PREFIX = "conversations"
 
     # like constructor
     def __init__(self, source, datadir):

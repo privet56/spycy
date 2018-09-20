@@ -84,7 +84,8 @@ Use Jupyter Notebooks for data exploration
 
 ##### TODO:
 	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
-	
+	automatize train_config.yml generation & seq2seq call
+
 
 ## Q&A
 	Message:

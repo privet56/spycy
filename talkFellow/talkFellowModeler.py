@@ -70,6 +70,8 @@ class TalkFellowModeler:
 
     def fit(self, collector):
 
+        #//TODO: shutil.copytree seq2seq to datadir
+
         cmd = '''
         cd ../../3rdparty_libs/seq2seq
 

@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 import re
 import glob
 import unidecode
@@ -41,11 +41,13 @@ class Collector_partitur(Collector):
         agsfiles = 0
         conversations = []
         ns = {'ag': 'http://www.ldc.upenn.edu/atlas/ag/'}
+        errorsCount = 0
+
+        #//TODO: more warnings if no subdirs or no .ags files found!
 
         for subdir in os.listdir(source):
             subdirs = subdirs + 1
             absSubDir = os.path.join(source, subdir)        #optional: check with if os.path.isdir(...)
-            #question = None
             conversation = []
             
             for agsfn in [f for f in os.listdir(absSubDir) if f.endswith('.ags')]:
@@ -55,7 +57,8 @@ class Collector_partitur(Collector):
                 except ET.ParseError as e:
                     #occurs...: handle ´ and \xB4   # not so urgent, as occuring in english texts
                     #see https://docs.python.org/3/library/pyexpat.html#module-xml.parsers.expat
-                    self.logger.log("ERR: coult not parse XML: "+subdir+"/"+agsfn+" excCode:"+str(e.code)+" {}".format(e))
+                    self.logger.log("ERR: could not parse XML: "+subdir+"/"+agsfn+" excCode:"+str(e.code)+" {}".format(e))
+                    errorsCount = errorsCount + 1
                     continue
                 root = doc.getroot() #root.tag = {http://www.ldc.upenn.edu/atlas/ag/}AGSet
                 
@@ -72,11 +75,11 @@ class Collector_partitur(Collector):
 
             if(len(conversation) > 0):
                 conversations.append(conversation)
-                self.logger.log("INF:("+subdir+" #("+str(subdirs)+") with a #conversation:"+str(len(conversation))+" ... #conversations:"+str(len(conversations)))
+                self.logger.log("INF:("+subdir+" #("+str(subdirs)+") with a #sentencesInConversation:"+str(len(conversation))+" ... #conversations:"+str(len(conversations)))
 
         token_counter = Counter()
 
-        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt'), 'w') as fout:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt'), 'w', encoding='utf-8') as fout:
             for conversation in conversations:
                 fout.write('\n'.join(conversation) + '\n\n')
                 for sentence in conversation:
@@ -84,14 +87,14 @@ class Collector_partitur(Collector):
                     if line:
                         token_counter.update(self.RE_TOKEN.findall(line))
 
-        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.tok'), 'w') as fout:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.tok'), 'w', encoding='utf-8') as fout:
             for token, count in token_counter.items():
                 fout.write('%s\t%d\n' % (token, count))
 
         pairs = []
         prev = None
 
-        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt')) as fin:
+        with open(os.path.join(self.datadir, self.FILE_PREFIX+'.txt')) as fin:      # ok, this could be done nicer, avoiding to read the just written file...
             for line in fin:
                 line = line.strip()
                 if line:
@@ -112,13 +115,13 @@ class Collector_partitur(Collector):
             path = self.datadir + '/%s' % tag
             if not os.path.isdir(path):
                 os.makedirs(path)
-            with open(os.path.join(path,'sources.txt'), 'wt') as sources:
-                with open(os.path.join(path,'targets.txt'), 'wt') as targets:
+            with open(os.path.join(path,'sources.txt'), 'wt', encoding='utf-8') as sources:
+                with open(os.path.join(path,'targets.txt'), 'wt', encoding='utf-8') as targets:
                     for source, target in pairs2:
                         sources.write(source + '\n')
                         targets.write(target + '\n')
 
-        return len(conversations), subdirs, 0
+        return len(conversations), subdirs, errorsCount
 
 if __name__ == '__main__':
 
@@ -126,6 +129,11 @@ if __name__ == '__main__':
     datadir = '../talkFellow/data_ger_partitur'
     logger = Logger('partitur', datadir)
 
+    startTime = time.time()
     c = Collector_partitur(source, datadir, logger)
     len_conversations, foundSubDirs, failed = c.collect(source)
-    logger.log("FINISH. len_conversations:"+str(len_conversations)+" foundSubDirs:"+str(foundSubDirs))
+
+    elapsed_time = time.time() - startTime
+    sElapsedTime = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
+
+    logger.log("FINISH. len_conversations:"+str(len_conversations)+" foundSubDirs:"+str(foundSubDirs)+" failedXmlFiles:"+str(failed)+" duration:"+sElapsedTime+" secs")

@@ -107,3 +107,12 @@ Use Jupyter Notebooks for data exploration
 		cd seq2seq
 		# Install package and dependencies
 		pip install -e .
+
+
+	Question:
+		I get the exception "ResourceExhaustedError OOM when allocating tensor with shape" when training my seq2seq model
+		What to do?
+
+	Answer:
+		1) reduce '--batch_size 1024'		
+		2) reduce your sentence length when generating with the collector

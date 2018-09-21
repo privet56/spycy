@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 #xml libs:
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
+from xml.parsers import expat
 #from xml import xpath
 #import xpath
 #import libxml2
@@ -34,6 +35,24 @@ class Collector_partitur(Collector):
     def tokenize(self, st):
         st = st.lower().replace('_', ' ')
         return ' '.join(self.RE_TOKEN.findall(st))
+    
+    max_len_found = -1
+    max_len_allowed = 128
+
+    def truncateSentence(self, sentence):
+        l = len(sentence)
+        if((l > self.max_len_found) and (l > 19)):
+            self.max_len_found = l
+            self.logger.log("longest sentence had "+str(self.max_len_found)+" chars")
+
+        if(l <= self.max_len_allowed):
+            return sentence
+
+        sentence = sentence[0:self.max_len_allowed]
+
+        lastspace = sentence.rfind(' ')         #remove last incomplete word
+        sentence = sentence[0:lastspace]
+        return sentence
 
     def collect(self, source, max_files=Collector.MAX_FILES_DEFAULT):
 
@@ -55,8 +74,17 @@ class Collector_partitur(Collector):
                 try:
                     doc = ET.parse(os.path.join(absSubDir, agsfn))
                 except ET.ParseError as e:
-                    #occurs...: handle ´ and \xB4   # not so urgent, as occuring in english texts
+                    #occurs...: handle ´ = \xB4 = &#xb4; = &acute; = u"\u00B4" = ACUTE ACCENT = &#xb4; = &#180;      # not so urgent, as occuring in english texts
                     #see https://docs.python.org/3/library/pyexpat.html#module-xml.parsers.expat
+
+                    #TODO: try:
+                    #parser = ET.XMLParser(encoding="utf-8") #or: ET.XMLParser(encoding='iso-8859-5') # or  parser=expat.ParserCreate('UTF-8') # or parser=expat.ParserCreate('ISO-8859-1')
+                    #doc = ET.parse(os.path.join(absSubDir, agsfn), parser=parser)
+                    # or:
+                    #import codecs
+                    #target_file = codecs.open("./my.xml",mode='r',encoding='utf-8')
+                    #targetTree = ET.parse( target_file )
+
                     self.logger.log("ERR: could not parse XML: "+subdir+"/"+agsfn+" excCode:"+str(e.code)+" {}".format(e))
                     errorsCount = errorsCount + 1
                     continue
@@ -71,6 +99,7 @@ class Collector_partitur(Collector):
                     sentence = e.text.strip()
                     if(sentence.startswith("EN>DE")):
                         sentence = unidecode.unidecode(" ".join(sentence[6:].lower().splitlines())).replace('#', ' ').replace(',', ' ').replace('!', ' ').replace('?', ' ').replace('.', ' ').replace('\t', ' ').replace('"u', 'ü').replace('"o', 'ö').replace('~', ' ').replace('"a', 'ä').replace('"s', 'ß').replace('  ', ' ').replace('  ', ' ').strip()
+                        sentence = self.truncateSentence(sentence)
                         conversation.append(sentence)
 
             if(len(conversation) > 0):

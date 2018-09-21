@@ -1,7 +1,7 @@
 import os, sys, time
 import enum
 
-#alternative logging class to the standard builtin import logging & pprint
+#alternative logging class to the standard builtin import logging(basicConfig|getLogger) & pprint
 
 @enum.unique
 class LogLevel(enum.Enum):

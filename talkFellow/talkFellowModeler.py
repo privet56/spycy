@@ -114,6 +114,21 @@ class TalkFellowModeler:
     def _tokens_to_str(self, tokens):
         return " ".join(tokens).split("SEQUENCE_END")[0].strip()
 
+    #//TODO: OOM -> use this
+    # ERROR: seq2seq ResourceExhaustedError OOM when allocating tensor with shape --> solution:
+    # based on https://github.com/google/seq2seq/issues/322
+    def get_session(self, gpu_fraction=0.3):
+        '''Assume that you have 6GB of GPU memory and want to allocate ~2GB'''
+
+        num_threads = os.environ.get('OMP_NUM_THREADS')
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
+
+        if num_threads:
+            return tf.Session(config=tf.ConfigProto(
+                gpu_options = gpu_options, intra_op_parallelism_threads=num_threads))
+        else:
+            return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+
     # A hacky way to retrieve prediction result from the task hook...
     prediction_dict = {}
     def _save_prediction_to_dict(self, source_tokens, predicted_tokens):
@@ -157,6 +172,9 @@ class TalkFellowModeler:
 
         scaffold = tf.train.Scaffold(init_fn=_session_init_op)
         session_creator = tf.train.ChiefSessionCreator(scaffold=scaffold)
+
+        #//TODO: OOM -> use this
+        #config = tf.ConfigProto( device_count = {'GPU': 1 , 'CPU': 8} )
 
         self.session = tf.train.MonitoredSession(
             session_creator=session_creator,

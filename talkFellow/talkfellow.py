@@ -7,6 +7,7 @@ import argparse
 from talkFellowModeler import TalkFellowModeler
 sys.path.append(os.getcwd()+'/../lib')
 from collector_gutenberg import CollectorGutenberg
+from collector_partitur import Collector_partitur
 from logger import Logger
 
 logger = None
@@ -16,7 +17,10 @@ MODE_TEST  = 'test'
 MODE_TRAIN_AND_TEST = 'train_and_test'
 
 def getCollector(source, datadir):
-        return CollectorGutenberg(source, datadir)
+        if(source == "gutenberg"):
+            return CollectorGutenberg(source, datadir)
+        if(source == "partitur"):
+            return Collector_partitur(source, datadir, logger)
 
 def train(datadir, source, bookids):
     collector = getCollector(source, datadir)

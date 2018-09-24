@@ -152,6 +152,9 @@ class Collector_partitur(Collector):
 
         return len(conversations), subdirs, errorsCount
 
+    def loadCollectedData(self):
+        pass
+
 if __name__ == '__main__':
 
     source  = '../talkFellow/data_ger/VM2_total_par'

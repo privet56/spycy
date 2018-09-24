@@ -1,4 +1,4 @@
-python autoCoder.py --mode=train_and_test --prefix=java --epochs=13 --datadir=data --source=d:/svn/ --max_file_count=999
+python autoCoder.py --mode=test --prefix=java --epochs=13 --datadir=data --source=d:/svn/ --max_file_count=999
 rem # 10 hours = 2 epochs
 rem python autoCoder.py --mode=train_and_test --prefix=java --epochs=5 --datadir=data --source=d:/svn/ --max_file_count=9999
 rem # 2.5 days = 5 epochs

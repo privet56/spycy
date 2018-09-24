@@ -61,8 +61,6 @@ class Collector_partitur(Collector):
         sentence = sentence.lower().strip()
         sentence = unidecode.unidecode(sentence)
 
-        print("{{{{{{{{{"+sentence+"}}}}}}}}}}}}}")
-
         sentence = sentence.replace('"a', 'ä')
         sentence = sentence.replace('"u', 'ü')
         sentence = sentence.replace('"o', 'ö')
@@ -96,7 +94,7 @@ class Collector_partitur(Collector):
             subdirs = subdirs + 1
             absSubDir = os.path.join(source, subdir)        #optional: check with if os.path.isdir(...)
             conversation = []
-            
+
             for agsfn in [f for f in os.listdir(absSubDir) if f.endswith('.ags')]:
                 agsfiles = agsfiles + 1
                 try:
@@ -122,13 +120,18 @@ class Collector_partitur(Collector):
                 for e in root.findall('./ag:AG[last()]/ag:Annotation[last()]/ag:Feature', ns):
                     if(idx > 0):
                         #occurs...
-                        self.logger.log("WRN: unexpected more <Features> in "+subdir+"/"+agsfn)
+                        #self.logger.log("WRN: unexpected more <Features> in "+subdir+"/"+agsfn)
+                        pass
                     idx = idx+1
                     sentence = e.text.strip()
                     if(sentence.startswith("EN>DE")):
                         sentence = self.clarifySentence(" ".join(sentence[6:].lower().splitlines()))
                         sentence = self.truncateSentence(sentence)
-                        conversation.append(sentence)
+                        if((len(conversation) > 0) and (conversation[len(conversation) - 1] == sentence)):
+                            pass
+                            #same sentence again
+                        else:
+                            conversation.append(sentence)
 
             if(len(conversation) > 0):
                 conversations.append(conversation)
@@ -185,7 +188,7 @@ class Collector_partitur(Collector):
 
 if __name__ == '__main__':
 
-    source  = '../talkFellow/data_ger/VM2_total_par'
+    source  = 'j:/projects/spycy/spycy/talkFellow/data_ger/VM2_total_par'
     datadir = '../talkFellow/data_ger_partitur'
     logger = Logger('partitur', datadir)
 

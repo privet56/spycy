@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE AGSet SYSTEM "ag.dtd">
+<AGSet id="e082ach1_034_LCS" version="1.0" xmlns="http://www.ldc.upenn.edu/atlas/ag/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/DC/documents/rec-dces-19990702.htm">
+	<Metadata>
+		<OtherMetadata LHD="Partitur 1.2.13"/>
+		<OtherMetadata REP="Muenchen"/>
+		<OtherMetadata SNB="2"/>
+		<OtherMetadata SAM="16000"/>
+		<OtherMetadata SBF="01"/>
+		<OtherMetadata SSB="16"/>
+		<OtherMetadata NCH="1"/>
+		<OtherMetadata SPN="LCS"/>
+	</Metadata>
+	<Timeline id="T1">
+		<Signal id="S1" mimeClass="text" mimeType="simpletext" encoding="utf8" unit="word" xlink:type="simple" xlink:href="/bmnt/BAS/VM31.1/par/e082a/e082ach1_034_LCS.par"/>
+	</Timeline>
+	<AG id="t1" type="Verbmobil Transliteration II" timeline="T1">
+		<Anchor id="A0" offset="0" unit="word"/>
+		<Anchor id="A1" offset="1" unit="word"/>
+		<Anchor id="A2" offset="2" unit="word"/>
+		<Anchor id="A3" offset="3" unit="word"/>
+		<Anchor id="A4" offset="4" unit="word"/>
+		<Anchor id="A5" offset="5" unit="word"/>
+		<Anchor id="A6" offset="6" unit="word"/>
+		<Anchor id="A7" offset="7" unit="word"/>
+		<Anchor id="A8" offset="8" unit="word"/>
+		<Anchor id="A9" offset="9" unit="word"/>
+		<Anchor id="A10" offset="10" unit="word"/>
+		<Anchor id="A11" offset="11" unit="word"/>
+		<Anchor id="A12" offset="12" unit="word"/>
+		<Anchor id="A13" offset="13" unit="word"/>
+		<Anchor id="A14" offset="14" unit="word"/>
+		<Anchor id="A15" offset="15" unit="word"/>
+		<Anchor id="A16" offset="16" unit="word"/>
+		<Annotation id="Ann0" type="TR2" start="A0" end="A1">
+			<Feature name="tr2">
+				@6okay &lt;!1 mkay&gt; , &lt;Cough&gt; &lt;P&gt; &lt;#&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann1" type="TR2" start="A1" end="A2">
+			<Feature name="tr2">
+				&lt;uhm&gt; &lt;P&gt; &lt;;long pause&gt; &lt;#&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann2" type="TR2" start="A2" end="A3">
+			<Feature name="tr2">
+				probably &lt;!1 prolly&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann3" type="TR2" start="A3" end="A4">
+			<Feature name="tr2">
+				sometime
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann4" type="TR2" start="A4" end="A5">
+			<Feature name="tr2">
+				early
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann5" type="TR2" start="A5" end="A6">
+			<Feature name="tr2">
+				in
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann6" type="TR2" start="A6" end="A7">
+			<Feature name="tr2">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann7" type="TR2" start="A7" end="A8">
+			<Feature name="tr2">
+				afternoon ? &lt;#&gt; &lt;P&gt; &lt;#&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann8" type="TR2" start="A8" end="A9">
+			<Feature name="tr2">
+				or
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann9" type="TR2" start="A9" end="A10">
+			<Feature name="tr2">
+				we
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann10" type="TR2" start="A10" end="A11">
+			<Feature name="tr2">
+				could
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann11" type="TR2" start="A11" end="A12">
+			<Feature name="tr2">
+				take
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann12" type="TR2" start="A12" end="A13">
+			<Feature name="tr2">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann13" type="TR2" start="A13" end="A14">
+			<Feature name="tr2">
+				earliest
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann14" type="TR2" start="A14" end="A15">
+			<Feature name="tr2">
+				flight
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann15" type="TR2" start="A15" end="A16">
+			<Feature name="tr2">
+				back .
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t2" type="Superimposed Speech" timeline="T1">
+		<Annotation id="Ann16" type="SUP" start="A0" end="A1">
+			<Feature name="sup">
+				so6@ &lt;*T&gt;t
+			</Feature>
+			<Feature name="utterance-id">
+				e082ach2_033_HLO.par
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t3" type="Orthography" timeline="T1">
+		<Annotation id="Ann17" type="ORT" start="A0" end="A1">
+			<Feature name="ort">
+				okay
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann18" type="ORT" start="A1" end="A2">
+			<Feature name="ort">
+				&lt;uhm&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann19" type="ORT" start="A2" end="A3">
+			<Feature name="ort">
+				probably
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann20" type="ORT" start="A3" end="A4">
+			<Feature name="ort">
+				sometime
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann21" type="ORT" start="A4" end="A5">
+			<Feature name="ort">
+				early
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann22" type="ORT" start="A5" end="A6">
+			<Feature name="ort">
+				in
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann23" type="ORT" start="A6" end="A7">
+			<Feature name="ort">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann24" type="ORT" start="A7" end="A8">
+			<Feature name="ort">
+				afternoon
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann25" type="ORT" start="A8" end="A9">
+			<Feature name="ort">
+				or
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann26" type="ORT" start="A9" end="A10">
+			<Feature name="ort">
+				we
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann27" type="ORT" start="A10" end="A11">
+			<Feature name="ort">
+				could
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann28" type="ORT" start="A11" end="A12">
+			<Feature name="ort">
+				take
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann29" type="ORT" start="A12" end="A13">
+			<Feature name="ort">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann30" type="ORT" start="A13" end="A14">
+			<Feature name="ort">
+				earliest
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann31" type="ORT" start="A14" end="A15">
+			<Feature name="ort">
+				flight
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann32" type="ORT" start="A15" end="A16">
+			<Feature name="ort">
+				back
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t4" type="Canonical Pronunciation" timeline="T1">
+		<Annotation id="Ann33" type="KAN" start="A0" end="A1">
+			<Feature name="kan">
+				@U'keI
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann34" type="KAN" start="A1" end="A2">
+			<Feature name="kan">
+				Vm
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann35" type="KAN" start="A2" end="A3">
+			<Feature name="kan">
+				'prA:b@bli
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann36" type="KAN" start="A3" end="A4">
+			<Feature name="kan">
+				sVmtaIm
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann37" type="KAN" start="A4" end="A5">
+			<Feature name="kan">
+				'3:rli
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann38" type="KAN" start="A5" end="A6">
+			<Feature name="kan">
+				In
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann39" type="KAN" start="A6" end="A7">
+			<Feature name="kan">
+				D@
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann40" type="KAN" start="A7" end="A8">
+			<Feature name="kan">
+				{ft@r'nu:n
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann41" type="KAN" start="A8" end="A9">
+			<Feature name="kan">
+				O:r
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann42" type="KAN" start="A9" end="A10">
+			<Feature name="kan">
+				wi:
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann43" type="KAN" start="A10" end="A11">
+			<Feature name="kan">
+				k'Ud
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann44" type="KAN" start="A11" end="A12">
+			<Feature name="kan">
+				teIk
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann45" type="KAN" start="A12" end="A13">
+			<Feature name="kan">
+				D@
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann46" type="KAN" start="A13" end="A14">
+			<Feature name="kan">
+				'3:rli@st
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann47" type="KAN" start="A14" end="A15">
+			<Feature name="kan">
+				flaIt
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann48" type="KAN" start="A15" end="A16">
+			<Feature name="kan">
+				b{k
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t5" type="Noise Labeling" timeline="T1">
+		<Annotation id="Ann49" type="NOI" start="A1" end="A1">
+			<Feature name="noi">
+				&lt;Cough&gt; &lt;#&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann50" type="NOI" start="A2" end="A2">
+			<Feature name="noi">
+				&lt;#&gt;
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann51" type="NOI" start="A8" end="A8">
+			<Feature name="noi">
+				&lt;#&gt; &lt;#&gt;
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t6" type="Dialogact Segmentation" timeline="T1">
+		<Annotation id="Ann52" type="DAS" start="A0" end="A1">
+			<Feature name="das">
+				@(FEEDBACK_POSITIVE AB)
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann53" type="DAS" start="A1" end="A8">
+			<Feature name="das">
+				@(SUGGEST AB)
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann54" type="DAS" start="A8" end="A16">
+			<Feature name="das">
+				@(SUGGEST AB)
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t7" type="Syntactic categories" timeline="T1">
+		<Annotation id="Ann55" type="SYN" start="A2" end="A3">
+			<Feature name="syn">
+				ADVP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann56" type="SYN" start="A2" end="A8">
+			<Feature name="syn">
+				NP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann57" type="SYN" start="A4" end="A8">
+			<Feature name="syn">
+				ADVP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann58" type="SYN" start="A5" end="A8">
+			<Feature name="syn">
+				PP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann59" type="SYN" start="A6" end="A7">
+			<Feature name="syn">
+				DT-ART
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann60" type="SYN" start="A6" end="A7">
+			<Feature name="syn">
+				DTP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				2
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann61" type="SYN" start="A6" end="A8">
+			<Feature name="syn">
+				NP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann62" type="SYN" start="A8" end="A9">
+			<Feature name="syn">
+				CNJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann63" type="SYN" start="A8" end="A16">
+			<Feature name="syn">
+				S
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann64" type="SYN" start="A9" end="A10">
+			<Feature name="syn">
+				NP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann65" type="SYN" start="A9" end="A16">
+			<Feature name="syn">
+				S
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann66" type="SYN" start="A11" end="A16">
+			<Feature name="syn">
+				VP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann67" type="SYN" start="A12" end="A13">
+			<Feature name="syn">
+				DT-ART
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann68" type="SYN" start="A12" end="A13">
+			<Feature name="syn">
+				DTP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				2
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann69" type="SYN" start="A12" end="A16">
+			<Feature name="syn">
+				NP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann70" type="SYN" start="A13" end="A14">
+			<Feature name="syn">
+				AP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann71" type="SYN" start="A15" end="A16">
+			<Feature name="syn">
+				ADVP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t8" type="Grammatical Function" timeline="T1">
+		<Annotation id="Ann72" type="FUN" start="A0" end="A1">
+			<Feature name="fun">
+				--
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann73" type="FUN" start="A2" end="A3">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann74" type="FUN" start="A2" end="A3">
+			<Feature name="fun">
+				ADJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann75" type="FUN" start="A2" end="A8">
+			<Feature name="fun">
+				--
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann76" type="FUN" start="A3" end="A4">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann77" type="FUN" start="A4" end="A5">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann78" type="FUN" start="A4" end="A8">
+			<Feature name="fun">
+				ADJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann79" type="FUN" start="A5" end="A6">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann80" type="FUN" start="A5" end="A8">
+			<Feature name="fun">
+				ADJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann81" type="FUN" start="A6" end="A7">
+			<Feature name="fun">
+				-
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann82" type="FUN" start="A6" end="A7">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann83" type="FUN" start="A6" end="A7">
+			<Feature name="fun">
+				SPR
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				2
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann84" type="FUN" start="A6" end="A8">
+			<Feature name="fun">
+				COMP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann85" type="FUN" start="A7" end="A8">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann86" type="FUN" start="A8" end="A9">
+			<Feature name="fun">
+				-
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann87" type="FUN" start="A8" end="A9">
+			<Feature name="fun">
+				-
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann88" type="FUN" start="A8" end="A16">
+			<Feature name="fun">
+				--
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann89" type="FUN" start="A9" end="A10">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann90" type="FUN" start="A9" end="A10">
+			<Feature name="fun">
+				SBJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann91" type="FUN" start="A9" end="A16">
+			<Feature name="fun">
+				-
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann92" type="FUN" start="A10" end="A11">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann93" type="FUN" start="A11" end="A12">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann94" type="FUN" start="A11" end="A16">
+			<Feature name="fun">
+				COMP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann95" type="FUN" start="A12" end="A13">
+			<Feature name="fun">
+				-
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann96" type="FUN" start="A12" end="A13">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann97" type="FUN" start="A12" end="A13">
+			<Feature name="fun">
+				SPR
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				2
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann98" type="FUN" start="A12" end="A16">
+			<Feature name="fun">
+				COMP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann99" type="FUN" start="A13" end="A14">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann100" type="FUN" start="A13" end="A14">
+			<Feature name="fun">
+				ADJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann101" type="FUN" start="A14" end="A15">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann102" type="FUN" start="A15" end="A16">
+			<Feature name="fun">
+				HD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann103" type="FUN" start="A15" end="A16">
+			<Feature name="fun">
+				ADJ
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				1
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t9" type="Lexical categories" timeline="T1">
+		<Annotation id="Ann104" type="LEX" start="A0" end="A1">
+			<Feature name="lex">
+				UH
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann105" type="LEX" start="A2" end="A3">
+			<Feature name="lex">
+				RB
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann106" type="LEX" start="A3" end="A4">
+			<Feature name="lex">
+				NN
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann107" type="LEX" start="A4" end="A5">
+			<Feature name="lex">
+				RB
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann108" type="LEX" start="A5" end="A6">
+			<Feature name="lex">
+				IN
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann109" type="LEX" start="A6" end="A7">
+			<Feature name="lex">
+				DT
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann110" type="LEX" start="A7" end="A8">
+			<Feature name="lex">
+				NN
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann111" type="LEX" start="A8" end="A9">
+			<Feature name="lex">
+				CC
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann112" type="LEX" start="A9" end="A10">
+			<Feature name="lex">
+				PP
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann113" type="LEX" start="A10" end="A11">
+			<Feature name="lex">
+				MD
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann114" type="LEX" start="A11" end="A12">
+			<Feature name="lex">
+				VB
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann115" type="LEX" start="A12" end="A13">
+			<Feature name="lex">
+				DT
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann116" type="LEX" start="A13" end="A14">
+			<Feature name="lex">
+				JJS
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann117" type="LEX" start="A14" end="A15">
+			<Feature name="lex">
+				NN
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann118" type="LEX" start="A15" end="A16">
+			<Feature name="lex">
+				RB
+			</Feature>
+			<Feature name="Syntaxtree-Index">
+				0
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t10" type="Syntactic-prosodic boundaries Labeling" timeline="T1">
+		<Annotation id="Ann119" type="PRO" start="A1" end="A1">
+			<Feature name="pro">
+				PM3
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann120" type="PRO" start="A4" end="A4">
+			<Feature name="pro">
+				PC2
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann121" type="PRO" start="A8" end="A8">
+			<Feature name="pro">
+				SM3
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann122" type="PRO" start="A15" end="A16">
+			<Feature name="pro">
+				SM3
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t11" type="Parts of Speech" timeline="T1">
+		<Annotation id="Ann123" type="POS" start="A0" end="A1">
+			<Feature name="pos">
+				JJ
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann124" type="POS" start="A2" end="A3">
+			<Feature name="pos">
+				RB
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann125" type="POS" start="A3" end="A4">
+			<Feature name="pos">
+				RB
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann126" type="POS" start="A4" end="A5">
+			<Feature name="pos">
+				JJ
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann127" type="POS" start="A5" end="A6">
+			<Feature name="pos">
+				IN
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann128" type="POS" start="A6" end="A7">
+			<Feature name="pos">
+				DT
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann129" type="POS" start="A7" end="A8">
+			<Feature name="pos">
+				NN
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann130" type="POS" start="A8" end="A9">
+			<Feature name="pos">
+				CC
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann131" type="POS" start="A9" end="A10">
+			<Feature name="pos">
+				PP
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann132" type="POS" start="A10" end="A11">
+			<Feature name="pos">
+				MD
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann133" type="POS" start="A11" end="A12">
+			<Feature name="pos">
+				VB
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann134" type="POS" start="A12" end="A13">
+			<Feature name="pos">
+				DT
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann135" type="POS" start="A13" end="A14">
+			<Feature name="pos">
+				JJS
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann136" type="POS" start="A14" end="A15">
+			<Feature name="pos">
+				NN
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann137" type="POS" start="A15" end="A16">
+			<Feature name="pos">
+				RB
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t12" type="Lemmata" timeline="T1">
+		<Annotation id="Ann138" type="LMA" start="A0" end="A1">
+			<Feature name="lma">
+				okay
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann139" type="LMA" start="A2" end="A3">
+			<Feature name="lma">
+				probably
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann140" type="LMA" start="A3" end="A4">
+			<Feature name="lma">
+				sometime
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann141" type="LMA" start="A4" end="A5">
+			<Feature name="lma">
+				early
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann142" type="LMA" start="A5" end="A6">
+			<Feature name="lma">
+				in
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann143" type="LMA" start="A6" end="A7">
+			<Feature name="lma">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann144" type="LMA" start="A7" end="A8">
+			<Feature name="lma">
+				afternoon
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann145" type="LMA" start="A8" end="A9">
+			<Feature name="lma">
+				or
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann146" type="LMA" start="A9" end="A10">
+			<Feature name="lma">
+				we
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann147" type="LMA" start="A10" end="A11">
+			<Feature name="lma">
+				could
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann148" type="LMA" start="A11" end="A12">
+			<Feature name="lma">
+				take
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann149" type="LMA" start="A12" end="A13">
+			<Feature name="lma">
+				the
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann150" type="LMA" start="A13" end="A14">
+			<Feature name="lma">
+				early
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann151" type="LMA" start="A14" end="A15">
+			<Feature name="lma">
+				flight
+			</Feature>
+		</Annotation>
+		<Annotation id="Ann152" type="LMA" start="A15" end="A16">
+			<Feature name="lma">
+				back
+			</Feature>
+		</Annotation>
+	</AG>
+	<AG id="t13" type="Verbmobil Translation" timeline="T1">
+		<Annotation id="Ann153" type="TLN" start="A0" end="A16">
+			<Feature name="tln">
+				EN&gt;DE	 okay , wahrscheinlich
+				irgendwann fr&quot;uh nachmittags ? oder wir k&quot;onnten
+				den fr&quot;uhesten Flug zur&quot;uck nehmen .
+				k&quot;onnten m&quot;oglicherweise
+				Gesch&quot;aftsschlu&quot;s
+				tsch&quot;u&quot;s
+				ungef&quot;ahr
+				(){}
+			</Feature>
+		</Annotation>
+	</AG>
+</AGSet>

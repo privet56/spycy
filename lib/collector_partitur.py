@@ -54,6 +54,34 @@ class Collector_partitur(Collector):
         sentence = sentence[0:lastspace]
         return sentence
 
+    allowedChars = "abcdefghijklmnopqrstuvwxyzäöüß"
+
+    def clarifySentence(self, sentence):
+
+        sentence = sentence.lower().strip()
+        sentence = unidecode.unidecode(sentence)
+
+        print("{{{{{{{{{"+sentence+"}}}}}}}}}}}}}")
+
+        sentence = sentence.replace('"a', 'ä')
+        sentence = sentence.replace('"u', 'ü')
+        sentence = sentence.replace('"o', 'ö')
+        sentence = sentence.replace('"s', 'ß')
+
+        sentence = sentence.replace('??', 'ä')
+        sentence = sentence.replace('ã ', 'ö')
+        sentence = sentence.replace('ã¼', 'ü')
+        sentence = sentence.replace('ãÿ', 'ß')
+
+        for ch in sentence:
+            if(self.allowedChars.find(ch) < 0):
+                sentence = sentence.replace(ch, ' ')
+
+        while(sentence.find('  ') > -1):
+            sentence = sentence.replace('  ', ' ').strip()
+
+        return sentence
+
     def collect(self, source, max_files=Collector.MAX_FILES_DEFAULT):
 
         subdirs = 0
@@ -98,7 +126,7 @@ class Collector_partitur(Collector):
                     idx = idx+1
                     sentence = e.text.strip()
                     if(sentence.startswith("EN>DE")):
-                        sentence = unidecode.unidecode(" ".join(sentence[6:].lower().splitlines())).replace('#', ' ').replace(',', ' ').replace('!', ' ').replace('?', ' ').replace('.', ' ').replace('\t', ' ').replace('"u', 'ü').replace('"o', 'ö').replace('~', ' ').replace('"a', 'ä').replace('"s', 'ß').replace('  ', ' ').replace('  ', ' ').strip()
+                        sentence = self.clarifySentence(" ".join(sentence[6:].lower().splitlines()))
                         sentence = self.truncateSentence(sentence)
                         conversation.append(sentence)
 

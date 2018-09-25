@@ -194,12 +194,13 @@ class TalkFellowModeler:
         else:
             return "no question, no answer!"
 
-    def discuss(self):
+    def discuss(self, collector):
         tf.reset_default_graph()
 
         question = ''
         while question != 'q':
             question = input(">>> ")
+            question = collector.questionify(question)
             source_tokens = question.split() + ["SEQUENCE_END"]
             self.session.run([], {
                 self.source_tokens_ph: [source_tokens],

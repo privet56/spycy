@@ -35,50 +35,6 @@ class Collector_partitur(Collector):
     def tokenize(self, st):
         st = st.lower().replace('_', ' ')
         return ' '.join(self.RE_TOKEN.findall(st))
-    
-    max_len_found = -1
-    max_len_allowed = 128
-
-    def truncateSentence(self, sentence):
-        l = len(sentence)
-        if((l > self.max_len_found) and (l > 19)):
-            self.max_len_found = l
-            self.logger.log("longest sentence had "+str(self.max_len_found)+" chars")
-
-        if(l <= self.max_len_allowed):
-            return sentence
-
-        sentence = sentence[0:self.max_len_allowed]
-
-        lastspace = sentence.rfind(' ')         #remove last incomplete word
-        sentence = sentence[0:lastspace]
-        return sentence
-
-    allowedChars = "abcdefghijklmnopqrstuvwxyzäöüß"
-
-    def clarifySentence(self, sentence):
-
-        sentence = sentence.lower().strip()
-        sentence = unidecode.unidecode(sentence)
-
-        sentence = sentence.replace('"a', 'ä')
-        sentence = sentence.replace('"u', 'ü')
-        sentence = sentence.replace('"o', 'ö')
-        sentence = sentence.replace('"s', 'ß')
-
-        sentence = sentence.replace('??', 'ä')
-        sentence = sentence.replace('ã ', 'ö')
-        sentence = sentence.replace('ã¼', 'ü')
-        sentence = sentence.replace('ãÿ', 'ß')
-
-        for ch in sentence:
-            if(self.allowedChars.find(ch) < 0):
-                sentence = sentence.replace(ch, ' ')
-
-        while(sentence.find('  ') > -1):
-            sentence = sentence.replace('  ', ' ').strip()
-
-        return sentence
 
     def collect(self, source, max_files=Collector.MAX_FILES_DEFAULT):
 

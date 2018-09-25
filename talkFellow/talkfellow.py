@@ -40,7 +40,7 @@ def test(datadir, source):
     logger.log("test-step.2: load model...", True)
     talkFellowModeler.load(datadir)
     logger.log("test-step.2: start talking to fellow... (exit with 'q')", True)
-    talkFellowModeler.discuss()
+    talkFellowModeler.discuss(collector)
     #question = 'Hallo'
     #logger.log("test-step.3: start talking...(question:'"+question+"')", True)
     #answer = talkFellowModeler.talk('Hallo')

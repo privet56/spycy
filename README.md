@@ -117,9 +117,12 @@ Use Jupyter Notebooks for data exploration
 		1) reduce '--batch_size 1024'		
 		2) reduce your sentence length when generating with the collector
 
+
 	Question:
 		How long does the train step take to create a model with seq2seq without a GPU?
 	
 	Answer:
 		Weeks or more
 		(see discussion on https://stackoverflow.com/questions/42464288/what-is-the-expected-time-of-training-for-the-following-seq2seq-model#42466486 )
+		Solution: it is strongly recommended to use GPU-based training, e.g. on a cloud server
+		(all the largest clould provider (AWS, Azure and Google GCP) offer GPU support)

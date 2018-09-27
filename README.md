@@ -17,7 +17,7 @@
 ##### Resource Utilization during training:
 <img src="autoCoder/modelgeneration.resource.utilization.png" width="550">
 
-##### Auto-Generated Java Code examples (based on a very small pretrained model):
+##### Auto-Generated Java Code examples (based on a very small pretrained model after a day training):
 <img src="autoCoder/program.generated.java.code.png" width="550">
 
 ##### TODO:
@@ -51,13 +51,14 @@ Use Jupyter Notebooks for data exploration
 	pip install --ignore-installed --upgrade tensorflow-gpu
 
 #### Execution
+	Activate python environment called 'talkFellow':
 	..\..\venvs\talkFellow\Scripts\Activate.ps1
 
 ### Setup - with Anaconda (conda, for Windows):
 	cd talkFellow
 
 	optional - use a virtual environment
-		#creates new python env in d:\projects\spycy\devenv\conda\envs\talkFellow\
+		#creates new python env in \spycy\devenv\conda\envs\talkFellow\
 		conda create -n talkFellow
 		#list envs
 		conda info -e
@@ -68,19 +69,22 @@ Use Jupyter Notebooks for data exploration
 	execute tensorflowchecker.py & check if tensorflow installation ok
 
 	# install seq2seq
-	conda install -c anaconda msgpack-python				//installs it into d:\projects\spycy\devenv\conda\pkgs\ (if not in venv!)
+	conda install -c anaconda msgpack-python				//installs it into \spycy\devenv\conda\pkgs\ (if not in venv!)
 	git clone https://github.com/google/seq2seq.git
 	cd seq2seq
 	pip install -e .
 
-	fix 2 imports of d:\projects\spycy\libs\seq2seq\seq2seq\contrib\seq2seq\helper.py :
+	fix 2 imports of \spycy\libs\seq2seq\seq2seq\contrib\seq2seq\helper.py :
 		from tensorflow.python.ops.distributions import bernoulli
 		from tensorflow.python.ops.distributions import categorical
 
 	conda install nltk
 
-#### Execution (here an example chat with the bot in German)
+#### Execution (here an example chat with the bot in German, data source: www.gutenberg.org/)
 <img src="talkFellow/talkfellow.chat.png" width="550">
+
+#### Execution (here an example chat with the bot in German, data source: Verbmobil ( http://www.bas.uni-muenchen.de/forschung/Verbmobil/Verbmobil.html ))
+<img src="talkFellow/talkfellow.chat.with.partitur.model.png" width="550">
 
 ##### TODO:
 	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
@@ -95,7 +99,7 @@ Use Jupyter Notebooks for data exploration
 		https://github.com/fo40225/tensorflow-windows-wheel
 		https://github.com/lakshayg/tensorflow-build
 
-		pip install --ignore-installed --upgrade d:\projects\spycy\libs\tensorflow-1.4.0-cp36-cp36m-win_amd64.whl
+		pip install --ignore-installed --upgrade \spycy\libs\tensorflow-1.4.0-cp36-cp36m-win_amd64.whl
 		(from https://github.com/fo40225/tensorflow-windows-wheel/blob/master/1.4.0/py36/CPU/avx2/tensorflow-1.4.0-cp36-cp36m-win_amd64.whl)
 		(...and possibly you have to reinstall keras in the required version)
 
@@ -112,7 +116,6 @@ Use Jupyter Notebooks for data exploration
 	Question:
 		I get the exception "ResourceExhaustedError OOM when allocating tensor with shape" when training my seq2seq model
 		What to do?
-
 	Answer:
 		1) reduce '--batch_size 1024'		
 		2) reduce your sentence length when generating with the collector
@@ -120,9 +123,8 @@ Use Jupyter Notebooks for data exploration
 
 	Question:
 		How long does the train step take to create a model with seq2seq without a GPU?
-	
 	Answer:
-		Weeks or more
+		Weeks (!) or more!
 		(see discussion on https://stackoverflow.com/questions/42464288/what-is-the-expected-time-of-training-for-the-following-seq2seq-model#42466486 )
 		Solution: it is strongly recommended to use GPU-based training, e.g. on a cloud server
 		(all the largest clould provider (AWS, Azure and Google GCP) offer GPU support)

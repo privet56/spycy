@@ -86,6 +86,8 @@ Use Jupyter Notebooks for data exploration
 #### Execution (here an example chat with the bot in German, data source: Verbmobil ( http://www.bas.uni-muenchen.de/forschung/Verbmobil/Verbmobil.html ))
 <img src="talkFellow/talkfellow.chat.with.partitur.model.png" width="550">
 
+<img src="talkFellow/talkfellow_chat.gif" width="550">
+
 ##### TODO:
 	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
 	automatize train_config.yml generation & seq2seq call

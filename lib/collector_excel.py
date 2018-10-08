@@ -23,14 +23,22 @@ from logger import Logger
 class Collector_Excel(Collector):
 
     logger = None
+    df = None
 
     def __init__(self, source, datadir, logger=None):
         Collector.__init__(self, source, datadir)
         self.logger = logger if logger else Logger(source, datadir)
+        self.df = None
 
-    def collect(self, source):
-        self.logger.err("Collector_Excel:collect: yet NOTIMPL")
-        pass
+    def collect(self, source, cols2extract, costs='costs', cumsum='cumsum'):
+        #self.logger.err("Collector_Excel:collect: yet NOTIMPL")
+        df = pd.read_excel(source)
+        df = df[cols2extract]
+        df[cumsum] = df[costs].cumsum()
+        #df.columns = ['ds', 'y','cumsum']      #renames the 3 cols
+        self.df = df
+        print(df.tail())
+        return df
 
 if __name__ == '__main__':
 
@@ -40,9 +48,9 @@ if __name__ == '__main__':
 
     startTime = time.time()
     c = Collector_Excel(source, datadir, logger)
-    df = c.collect(os.path.join(datadir, source))
+    df = c.collect(os.path.join(datadir, source), cols2extract=['date','costs'], costs='costs', cumsum='cumsum')
 
     elapsed_time = time.time() - startTime
     sElapsedTime = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
 
-    logger.log("FINISH. "+df+" duration:"+sElapsedTime+" secs")
+    logger.log("FINISH. duration:"+sElapsedTime+" secs")

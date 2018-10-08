@@ -1,6 +1,8 @@
 # Spycy
 ## spicy python machine learning & AI recipes:
-## AutoCoder (Code-Generator) and TalkFellow (Chat Bot)
+## AutoCoder (Code-Generator)
+## TalkFellow (Chat Bot)
+## ShoppingQueen (Shopping Predictor)
 
 ### VSCode plugins
 	Python 3
@@ -92,6 +94,10 @@ Use Jupyter Notebooks for data exploration
 	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
 	automatize train_config.yml generation & seq2seq call
 
+## 3.: ShoppingQueen
+##### TODO:
+	Use datasource of Youtube playlist
+
 
 ## Q&A
 	Message:
@@ -130,3 +136,30 @@ Use Jupyter Notebooks for data exploration
 		(see discussion on https://stackoverflow.com/questions/42464288/what-is-the-expected-time-of-training-for-the-following-seq2seq-model#42466486 )
 		Solution: it is strongly recommended to use GPU-based training, e.g. on a cloud server
 		(all the largest clould provider (AWS, Azure and Google GCP) offer GPU support)
+
+	Question:
+		Where can I find large open text data sources for training the machine learning algorithm?
+	Answer:
+		Search in the large open human language database of https://www.nltk.org/:
+		The nltk shell allows downloading open source data, e.g. from http://gutenberg.org/
+			import nltk
+			nltk.download('gutenberg')
+			# or with the nltk download shell:
+			nltk.download_shell()
+
+		Look on http://www.bas.uni-muenchen.de/forschung/Verbmobil/ for large German conversation data sources.
+
+	Question:
+		How to install the Facebook-Prophet python library on windows in an Anaconda environment?
+	Answer:
+		Installation steps:
+			- $ conda install libpython m2w64-toolchain -c msys2
+			- config distutils (import distutils & print(distutils.__file__))
+				PYTHONPATH\Lib\distutils\distutils.cfg
+				[build]
+				compiler=mingw32
+			- $ conda install gcc
+			- $ conda install numpy cython -c conda-forge						#overwrites customized tensorflow installation!
+			- $ conda install matplotlib scipy pandas -c conda-forge
+			- $ conda install pystan -c conda-forge
+			- $ conda install -c conda-forge fbprophet

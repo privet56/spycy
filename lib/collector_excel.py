@@ -37,7 +37,7 @@ class Collector_Excel(Collector):
         df[cumsum] = df[costs].cumsum()
         df.columns = colsDestination      #renames the 3 cols
         self.df = df
-        print(df.tail())
+        #print(df.tail())
         return df
 
 if __name__ == '__main__':

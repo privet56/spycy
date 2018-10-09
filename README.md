@@ -96,6 +96,12 @@ Use Jupyter Notebooks for data exploration
 	Look for larger german conversation data sources on nltk.download_shell()
 
 ## 3.: ShoppingQueen
+	Predicts future expenses based on past data.
+	Result graphs:
+<img src="shoppingQueen/data/amazon_order_history.xlsx.plot.png" width="550">
+<img src="shoppingQueen/data/amazon_order_history.xlsx.plot_components.png" width="550">
+
+
 ##### TODO:
 	Use a Youtube playlist as datasource for prediction!
 
@@ -164,3 +170,18 @@ Use Jupyter Notebooks for data exploration
 			- $ conda install matplotlib scipy pandas -c conda-forge
 			- $ conda install pystan -c conda-forge
 			- $ conda install -c conda-forge fbprophet
+
+	Question:
+		When trying to plot a graph, I get the error message
+			'This application failed to start because it could not find or load the Qt platform plugin "windows"'
+			...with installed Anaconda, incl. the Qt plugin ($ conda install qt)
+	Answer:
+		COPY the
+			%DEVENV%\conda\Library\plugins\platforms
+			folder to
+			%DEVENV%\conda
+		//the other alternative: extend your %HATH% with %DEVENV%\conda\Library\plugins\platforms
+
+
+##### VS Code with Python IntelliSense:
+<img src="vsc.python.editor.intellisense.png" width="550">

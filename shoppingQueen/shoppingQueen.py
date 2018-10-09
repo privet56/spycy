@@ -4,6 +4,7 @@ sys.path.append(os.getcwd()+'/../lib')
 from shoppingQueenModeler import ShoppingQueenModeler
 from collector_excel import Collector_Excel
 from logger import Logger
+import defs
 
 logger = None
 
@@ -15,10 +16,10 @@ def getCollector(datadir, source):
 def predict(datadir, source):
     collector = getCollector(datadir, source)
     logger.log("step.0: load data source...")
-    collector.collect(os.path.join(datadir, source))
+    collector.collect(os.path.join(datadir, source), cols2extract=defs.COLS2EXTRACT, colsDestination=defs.COLSDESTINATION, costs=defs.COL_COSTS, cumsum=defs.COL_CUMSUM)
     logger.log("step.0: fit data source...", True)
     shoppingQueenModeler = ShoppingQueenModeler(source, datadir, logger)
-    shoppingQueenModeler.fit()
+    shoppingQueenModeler.fit(collector)
     logger.log("FINISH: fit data source...", True)
 
 if __name__ == '__main__':

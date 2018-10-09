@@ -1,14 +1,17 @@
 # Spycy
 ## Spicy python machine learning & AI recipes:
-### 1: AutoCoder (Code-Generator)			[chapter 1](#1-autocoder)
-### 2: TalkFellow (Chat Bot) 				[chapter 2](#2-talkfellow)
-### 3: ShoppingQueen (Shopping Predictor) 	[chapter 3](#3-shoppingqueen)
+### 1: AutoCoder (Code-Generator):			[chapter 1](#1-autocoder)
+### 2: TalkFellow (Chat Bot): 				[chapter 2](#2-talkfellow)
+### 3: ShoppingQueen (Shopping Predictor): 	[chapter 3](#3-shoppingqueen)
+
+
+.
 
 
 ### VSCode plugins
 	Python 3, AI, jupyter, GitLens
 
-## 1.: autoCoder
+## 1: autoCoder
 ### program learns to program; generates program code automatically.
 	Scripts read in source code files of a certain type, generates a Keras model of it, so that it can generate new code itself.
 
@@ -31,7 +34,7 @@
 #### Jupyter:
 Use Jupyter Notebooks for data exploration
 
-## 2.: TalkFellow
+## 2: TalkFellow
 ### Setup - from stratch
 	cd talkFellow
 	# create py virtual environment
@@ -96,7 +99,7 @@ Use Jupyter Notebooks for data exploration
 	automatize train_config.yml generation & seq2seq call
 	Look for larger german conversation data sources on nltk.download_shell()
 
-## 3.: ShoppingQueen
+## 3: ShoppingQueen
 	Predicts future expenses based on past data.
 	Third party library: Prophet of Facebook ( https://github.com/facebook/prophet/ )
 	Input: Amazon shopping history 2009 - 2018

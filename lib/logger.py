@@ -25,6 +25,10 @@ class Logger:
 
         self.lasttime = time.time()
 
+    def logByIdent(self, caller, str, bWithElapsedTime=False):
+        #//TODO: log also function name
+        self.log(""+self.__class__.__name__+str, bWithElapsedTime)
+
     def inf(self, str, bWithElapsedTime=False):
         return self.log(LogLevel.INF.value + str, bWithElapsedTime=bWithElapsedTime)
     def wrn(self, str, bWithElapsedTime=False):

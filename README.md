@@ -93,10 +93,11 @@ Use Jupyter Notebooks for data exploration
 ##### TODO:
 	Train with real cool german conversations, from ftp://ftp.bas.uni-muenchen.de/pub/BAS/VM/
 	automatize train_config.yml generation & seq2seq call
+	Look for larger german conversation data sources on nltk.download_shell()
 
 ## 3.: ShoppingQueen
 ##### TODO:
-	Use datasource of Youtube playlist
+	Use a Youtube playlist as datasource for prediction!
 
 
 ## Q&A

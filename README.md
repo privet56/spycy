@@ -1,8 +1,9 @@
 # Spycy
-## spicy python machine learning & AI recipes:
-### 1.: AutoCoder (Code-Generator)
-### 2.: TalkFellow (Chat Bot)
-### 3.: ShoppingQueen (Shopping Predictor)
+## Spicy python machine learning & AI recipes:
+### 1: AutoCoder (Code-Generator)			[chapter 1](#1-autocoder)
+### 2: TalkFellow (Chat Bot) 				[chapter 2](#2-talkfellow)
+### 3: ShoppingQueen (Shopping Predictor) 	[chapter 3](#3-shoppingqueen)
+
 
 ### VSCode plugins
 	Python 3, AI, jupyter, GitLens
@@ -97,7 +98,9 @@ Use Jupyter Notebooks for data exploration
 
 ## 3.: ShoppingQueen
 	Predicts future expenses based on past data.
-	Result graphs:
+	Third party library: Prophet of Facebook ( https://github.com/facebook/prophet/ )
+	Input: Amazon shopping history 2009 - 2018
+	Result graphs of prediction:
 <img src="shoppingQueen/data/amazon_order_history.xlsx.plot.png" width="550">
 <img src="shoppingQueen/data/amazon_order_history.xlsx.plot_components.png" width="550">
 

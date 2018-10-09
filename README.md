@@ -1,11 +1,11 @@
 # Spycy
 ## spicy python machine learning & AI recipes:
-## AutoCoder (Code-Generator)
-## TalkFellow (Chat Bot)
-## ShoppingQueen (Shopping Predictor)
+### 1.: AutoCoder (Code-Generator)
+### 2.: TalkFellow (Chat Bot)
+### 3.: ShoppingQueen (Shopping Predictor)
 
 ### VSCode plugins
-	Python 3
+	Python 3, AI, jupyter, GitLens
 
 ## 1.: autoCoder
 ### program learns to program; generates program code automatically.
@@ -104,6 +104,7 @@ Use Jupyter Notebooks for data exploration
 
 ##### TODO:
 	Use a Youtube playlist as datasource for prediction!
+	Customize plotted prediction graph for 3D display.
 
 
 ## Q&A

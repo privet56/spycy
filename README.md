@@ -1,8 +1,8 @@
 # Spycy
 ## Spicy python machine learning & AI recipes:
-### 1: AutoCoder (Code-Generator):			[chapter 1](#1-autocoder)
-### 2: TalkFellow (Chat Bot): 				[chapter 2](#2-talkfellow)
-### 3: ShoppingQueen (Shopping Predictor): 	[chapter 3](#3-shoppingqueen)
+### 1: AutoCoder (Code-Generator):			[Section 1](#1-autocoder)
+### 2: TalkFellow (Chat Bot): 				[Section 2](#2-talkfellow)
+### 3: ShoppingQueen (Shopping Predictor): 	[Section 3](#3-shoppingqueen)
 
 
 .

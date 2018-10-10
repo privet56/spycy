@@ -105,12 +105,11 @@ Use Jupyter Notebooks for data exploration
 	Input: Amazon shopping history 2009 - 2018
 	Result graphs of prediction:
 <img src="shoppingQueen/data/amazon_order_history.xlsx.plot.png" width="550">
+<img src="shoppingQueen/data/amazon_order_history.xlsx.plot3d.png" width="550">
 <img src="shoppingQueen/data/amazon_order_history.xlsx.plot_components.png" width="550">
-
 
 ##### TODO:
 	Use a Youtube playlist as datasource for prediction!
-	Customize plotted prediction graph for 3D display.
 
 
 ## Q&A

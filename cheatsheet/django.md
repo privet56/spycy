@@ -45,8 +45,7 @@ http://localhost:8000/admin/	#admin ui
 		q = Mymodel.objects.get(id=1)
 
 ## Create an app in your project:
-	$ python manage.py startup myapp	#creates new app with models, tests, views, 	admin
-
+	$ python manage.py startapp myapp	#creates new app with models, tests, views, admin
 	# add to INSTALLED_APPS
 	# extend urls.py:
 		from django.conf.urls import url, include
@@ -154,15 +153,15 @@ http://localhost:8000/admin/	#admin ui
 # Generic view:
 	myapp/urls.py:
 		path('', views.IndexView.as_view(), name='index')
-		path('<int:pk>', views.DetailView.as_view(), name='detail')			#pk is a fix name
+		path('<int:pk>', views.DetailView.as_view(), name='detail')	#pk is a fix name
 	myapp/view.py:
 		class IndexView(generic.ListView):
-			template_name = 'myapp/index.html'								#fix variable name
-			context_object_name = 'latest_myapp_list'						#context variable override default: myapp_list
+			template_name = 'myapp/index.html'			#fix variable name
+			context_object_name = 'latest_myapp_list'		#context variable override default: myapp_list
 			def get_queryset(self):
 				return Mymodel.objects.order_by('-pub_date')[:5]
 		class DetailView(generic.DetailView):
-			model = Mymodel													#fix variable name
+			model = Mymodel						#fix variable name
 			template_name = 'myapp/detail.html'
 		def update(request, id):
 			...

@@ -38,8 +38,8 @@ http://localhost:8000/admin/	#admin ui
 	$ python manage.py runserver
 	$ python manage.py createsuperuser --username=myname --email=my@my.com	#prompts for pwd
 	$ python manage.py startapp myapp
-	$ python manage.py test myapp
-	$ python manage.py shell					# you can write python on the shell
+	$ python manage.py test myapp				# exec myapp/tests.test_*
+	$ python manage.py shell				# you can write python on the shell
 		# from myapp.models import Mymodel
 		Mymodel.objects.filter(mymodel_text_startswith='my')
 		q = Mymodel.objects.get(id=1)
@@ -54,11 +54,11 @@ http://localhost:8000/admin/	#admin ui
 		from django.conf.urls import url, include
 		from . import views
 		from django.urls import path
-		app_name = "myapp"													# namespace!
+		app_name = "myapp"					# namespace!
 		urlpatterns = [
-			url(r'^$', views.index, name='index'),							#views.index -> views.py: def index(request):
+			url(r'^$', views.index, name='index'),		#views.index -> views.py: def index(request):
 			url(r'^details/(?P<id>\d+)/$', views.details, name='details')
-			#path('', views.index)											# this syntax is for a newer django release
+			#path('', views.index)				# this syntax is for a newer django release
 			#path('details/<int:id>/', views.details, name='details')
 		]
 
@@ -76,17 +76,17 @@ http://localhost:8000/admin/	#admin ui
 			context = {
 				'title' = 'myapp',
 				'mydatas' = mymodels,
-				'output':', '.join([mymodel.name for mymodel in mymodels])		# list comprehension
+				'output':', '.join([mymodel.name for mymodel in mymodels]) # list comprehension
 			}
 			return render(request, 'myapp/index.html', context)	#{'myapptitle':'myapp'})
 			# Alternative:
 			# loader.get_template('myapp/index.html')
 			# return HttpResponse(template.render(context, request))
 		def details(request, id):
-			#mymodel = Mymodel.objects.get(full_name_startswith='name')			#attention: raises exception if not found or >1 found
+			#mymodel = Mymodel.objects.get(full_name_startswith='name')		#attention: raises exception if not found or >1 found
 			try:
 				mymodel = Mymodel.objects.get(id=id | pk=id)
-			catch Mymodel.DoesNotExist:											# alternative: get_object_or_404
+			catch Mymodel.DoesNotExist:						# alternative: get_object_or_404
 				raise Http404("not found")
 			context = {
 				'mydata':mymodel
@@ -109,14 +109,14 @@ http://localhost:8000/admin/	#admin ui
 					{% endfor %}
 			{% endblock %}
 			<a href="{% url 'detail' mydata.id %}">{{mydata.title}}</a>
-			<a href="{% url 'myapp:detail' mydata.id %}">{{mydata.title}}</a>		# namespace (->app_name)
+			<a href="{% url 'myapp:detail' mydata.id %}">{{mydata.title}}</a>	# namespace (->app_name)
 	# myapp/models.py
 		from django.db import models
 		from datetime import datetime
 		from django.utils import timezone
-		class Mymodel(models.Model):												# pk (primary key) is created automatically by base
+		class Mymodel(models.Model):				# pk (primary key) is created automatically by base
 			title = models.CharField(max_length=222)
-			body = models.TextField()												# there is also IntegerField
+			body = models.TextField()			# there is also IntegerField
 			created_at = models.DateTimeField(default=datetime.now, blank=True)		# or do TZ-aware!
 			# relation to another model, you get access functions like mymodel.submymodel_set.all
 			# submy = models.ForeignKey(SubMyModel, on_delete=models.CASCADE)
@@ -154,7 +154,7 @@ http://localhost:8000/admin/	#admin ui
 	myapp/urls.py:
 		path('', views.IndexView.as_view(), name='index')
 		path('<int:pk>', views.DetailView.as_view(), name='detail')	#pk is a fix name
-	myapp/view.py:
+	myapp/views.py:
 		class IndexView(generic.ListView):
 			template_name = 'myapp/index.html'			#fix variable name
 			context_object_name = 'latest_myapp_list'		#context variable override default: myapp_list
@@ -173,7 +173,7 @@ http://localhost:8000/admin/	#admin ui
 		from django.test import TestCase
 		from .models import Mymodel
 		class MymodelTest(TestCase):
-			def test_mymodel(self):											# start with test_ triggers unit test execution
+			def test_mymodel(self):					# start with test_ triggers unit test execution
 				"""
 				unit test case
 				"""
@@ -193,5 +193,5 @@ http://localhost:8000/admin/	#admin ui
 		$ from django.test import Client
 		$ client = Client()
 		$ response = client.get('/')
-		$ response = client.get(reverse('myapp:index'))						#response has status_code & content & context['latest_myapp_list']
+		$ response = client.get(reverse('myapp:index'))			#response has status_code & content & context['latest_myapp_list']
 		

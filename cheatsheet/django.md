@@ -183,6 +183,7 @@ http://localhost:8000/admin/	#admin ui
 				mymodel = Mymodel(pub_date=time)
 				self.assertIs(mymodel.isSomeCalc(), False)
 			def test_myui(self):
+				url = reverse('myapp:detail', args=(mymodel.id,))
 				response = self.client.get(reverse('myapp:index'))
 				self.assertEqual(response.status_code, 200)
 				self.assertContains(response, 'mytext')
@@ -197,4 +198,12 @@ http://localhost:8000/admin/	#admin ui
 		$ response = client.get('/')
 		#response has status_code & content & context['latest_myapp_list']
 		$ response = client.get(reverse('myapp:index'))
-		
+	# integration / ui test of the complete app, incl. client side (js) code:
+		use LiveServerTestCase & Selenium
+
+# Static files:
+	# myapp/static/myapp/{*.js,*.css}					# you can create subdirs, like js,css,img
+	# INSTALLED_APPS = [ 'django.contrib.staticfiles', ...
+	# reference in template as:
+		{% load static %}
+		<link rel=stylesheet type=text/css href="{% static myapp/*.css %}" />

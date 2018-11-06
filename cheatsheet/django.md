@@ -1,4 +1,4 @@
-# DJANGO:
+# DJANGO
 	Is an MVC, better said, an MTV (Model-Template-View) framework
 	Editors: vscode, atom, ...
 
@@ -83,7 +83,8 @@ http://localhost:8000/admin/	#admin ui
 			# loader.get_template('myapp/index.html')
 			# return HttpResponse(template.render(context, request))
 		def details(request, id):
-			#mymodel = Mymodel.objects.get(full_name_startswith='name')		#attention: raises exception if not found or >1 found
+			# Attention: this raises exception if not found or >1 found
+			#mymodel = Mymodel.objects.get(full_name_startswith='name')
 			try:
 				mymodel = Mymodel.objects.get(id=id | pk=id)
 			catch Mymodel.DoesNotExist:						# alternative: get_object_or_404
@@ -105,7 +106,7 @@ http://localhost:8000/admin/	#admin ui
 				my app content
 				<ul>
 					{% for mydata in mydatas %}
-						<li><a href="/myapp/details/{{mydata.id}}">{{mydata.title}}	# better use {% url incl. namespace
+						<li><a href="/myapp/details/{{mydata.id}}">{{mydata.title}} #better: {% url namespace
 					{% endfor %}
 			{% endblock %}
 			<a href="{% url 'detail' mydata.id %}">{{mydata.title}}</a>
@@ -137,7 +138,8 @@ http://localhost:8000/admin/	#admin ui
 	myapp/views.py:
 		def update(request, id):
 			mymodel = get_object_or_404(Mymodel, pk=id)
-			mymodel.dummySetPropFromPostRequest(request.POST['mysubval'])			# Attention: raises KeyError if not found
+			# Attention: raises KeyError if not found
+			mymodel.dummySetPropFromPostRequest(request.POST['mysubval'])
 			mymodel.save()
 			return HttpResponseRedirect(reverse('myapp:index', args=(mymodel.id,)))	# avoiding resubmit
 				
@@ -193,5 +195,6 @@ http://localhost:8000/admin/	#admin ui
 		$ from django.test import Client
 		$ client = Client()
 		$ response = client.get('/')
-		$ response = client.get(reverse('myapp:index'))			#response has status_code & content & context['latest_myapp_list']
+		#response has status_code & content & context['latest_myapp_list']
+		$ response = client.get(reverse('myapp:index'))
 		

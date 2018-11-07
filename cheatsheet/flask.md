@@ -48,7 +48,7 @@
 			# query example start
 			result = cur.execute('''SELECT * FROM users WHERE name = %s ''', [name])
 			if result > 0:
-				d = cur.fetchone()
+				d = cur.fetchone() #cur.fetchall() would return a list
 				p = d['pwd']	# ensure _CURSORCLASS = 'DictCursor' (default is tuple)
 				if sha256_crypt.verify(p, request.form['pwd']):
 					app.logger.info('OK!')
@@ -142,7 +142,7 @@
 		{% extends 'layout.html %}
 		{% block body %}
 		{% for d in data %}
-			<a href="data/{{d.id}}">{{d.title}}</a>
+			<a href="data/{{d.id}}">{{d.title | safe}}</a>	# safe allows html
 		{% endfor %}
 		{% endblock %}
 		
@@ -159,4 +159,8 @@
 		{% endblock %}
 
 ### exec:
-	python3 app.py
+	$ python3 app.py
+		or
+	$ export FLASK_APP=app.py	# on windows: SET instead of export
+	$ export FLASK_DEBUG=1		# don't need to restart server to see changes
+	$ flask run

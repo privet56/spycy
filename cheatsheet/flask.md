@@ -65,8 +65,9 @@
 		
 	class MyForm(Form):
 		name = StringField('First Field', [validators.Length(min=1,max=55)])
-		pwd = PasswordField('Snd Field', [validators.DataRequired(),validators.EqualTo('confirm',message='they do not match')])
+		pwd = PasswordField('Scnd Field', [validators.DataRequired(),validators.EqualTo('confirm',message='they do not match')])
 		confirm = PasswordField('Th Field')
+		# other possibilities, eg. TextAreaField
 		
 	def requires_roles(*roles):
 		def wrapper(f):

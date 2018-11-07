@@ -207,3 +207,6 @@ http://localhost:8000/admin/	#admin ui
 	# reference in template as:
 		{% load static %}
 		<link rel=stylesheet type=text/css href="{% static myapp/*.css %}" />
+
+
+// TODO: auth, Signals, 

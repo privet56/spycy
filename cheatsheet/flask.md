@@ -4,7 +4,7 @@
 	$ sudo apt-get install python3-pip
 	$ pip install flask
 	$ pip install flask-mysqldb
-	$ pip install flask-WTF
+	$ pip install flask-wtf
 	$ pip install passlib
 	
 ## app:
@@ -16,6 +16,7 @@
 	from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 	from passlib.hash import sha256_crypt
 	from data import Data
+	from forms import MyForm
 	
 	app = Flask(__name__)
 	app.debug = True	# reloads browser at change in py!
@@ -23,8 +24,11 @@
 	app.config['MYSQL_HOST'] = 'localhost' # similarly _USER _PASSWORD, _DB
 	app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 	mysql = MySQL(app)
+	#generate safe key with: import secrets -> secrets.token_hex(16)
+	app.config['SECRET_KEY'] = 'mysecret'
 	
 	@app.route('/')
+	@app.route('/home')	#you can decorate twice!
 	def index():
 		return render_template('index.html')
 	@app.route('/about')
@@ -32,7 +36,8 @@
 		return render_template('about.html')
 	@app.route('/alldata')
 	def alldata():
-		return render_template('data.html', data = data)
+		form = MyForm()
+		return render_template('data.html', title='My Title', data = data, form=form)
 	@app.route('/data/<string:id>/')
 	def data(id):
 		return render_template('data.html', id = id)
@@ -40,6 +45,7 @@
 	@requires_roles('admin', 'user')
 	def myform():
 		form = MyForm(request.form)
+		#Alternative: if form.validate_on_submit():
 		if request.method == 'POST' and form.validate():
 			name = form.name.data	# or request.form['name']
 			pwd = sha256_crypt.encrypt(str(form.pwd.data))
@@ -60,10 +66,11 @@
 			mysql.connection.commit()
 			cur.close()
 			flash('Done!', 'success')
+			flash(f'Done! {form.name.data}', 'success') # f' is python version >= 3.6, otherwise use format
 			return redirect(url_for('index'))			
 		return render_template('myform.html', form = form)
 		
-	class MyForm(Form):
+	class MyForm(Form): # better: see below 'forms.py'
 		name = StringField('First Field', [validators.Length(min=1,max=55)])
 		pwd = PasswordField('Scnd Field', [validators.DataRequired(),validators.EqualTo('confirm',message='they do not match')])
 		confirm = PasswordField('Th Field')
@@ -94,6 +101,18 @@
 		app.secret_key = 'mysecret'	# session needs it
 		app.run(debug=True)
 
+### forms.py
+	from flask_ftw import FlaskForm
+	from wtfforms import StringField, SubmitField, BooleanField
+	from wtfforms.validators import DataRequired, Length, Email, EqualTo
+	class MyForm(FlaskForm):
+		name = StringField('Name', validators=[DataRequired(), Length(min=2, max=22)])
+		mail = StringField('Mail', validators=[DataRequired(), Email()])
+		pwd1 = StringField('Pwd1', validators=[DataRequired()])
+		pwd2 = StringField('Pwd2', validators=[DataRequired(), EqualTo('pwd1')]) # confirm
+		remb = BooleanField('Remember Me')
+		submit = SubmitField('Submit Form')
+
 ### data.py
 	def Data():
 		data = [
@@ -109,12 +128,12 @@
 		{% extends 'layout.html %}				# jinja
 		{% block body%}
 			mycontent
-		{% endblock %}
+		{% endblock body %}					# you can tell explicitely which block you close
 		
 	templates/includes/_navbar.html
-		<nav class="navbar navbar-default" ...			# bootstrap, responsive top area
+		<header... <nav class="navbar navbar-default" ...	# bootstrap, responsive top area
 		{% with messages = get_flashed_messages(with_categories=true) %}
-			{% if messages%}
+			{% if messages %}
 				{% for cat, msg in messages %}
 					{{cat}} {{msg}}			# flash message
 				{% endfor %}
@@ -150,17 +169,41 @@
 		{% extends 'layout.html %}
 		{% block body %}
 		{% from "includes/_formhelpers.html" import render_field %}
-		<form method=post>
+		<form method=post> # no action -> submits to same url
+			{{ form.hidden_tag() }} # CSRF token is set here
+			
 			{{render_field(form.name, class_="form_control")}}
 			# or:
-			# <input value="{{request.form.name}}">
+			<input value="{{request.form.name}}">
+			# or:
+			# output label & input of the MyForm class member 'name':
+			{{ form.name.label(class='form-control-label') }}
+			{% if form.name.errors %}
+				{{ form.name(class='form-control is-invalid') }}
+				{% for e in form.name.errors %}
+					{{ e }}
+				{% endfor %}
+			{% else %}
+				{{ form.name(class='form-control') }}
+			{% endif %}
+			{{ form.submit(class='btn') }}
+			
 			<input type=submit>
 		</form>
+		<a href="{{ url_for('login') }}"> # 'login' is the @app.route I link to
 		{% endblock %}
 
+### static files:
+	place static files here:
+		static/{*.js | *.css}
+	reference static files in the templates this way:
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='main.css') }}" />
+		
 ### exec:
 	$ python3 app.py
 		or
 	$ export FLASK_APP=app.py	# on windows: SET instead of export
 	$ export FLASK_DEBUG=1		# don't need to restart server to see changes
 	$ flask run
+
+// TODO: describe: flask shell

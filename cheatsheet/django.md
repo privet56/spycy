@@ -209,4 +209,4 @@ http://localhost:8000/admin/	#admin ui
 		<link rel=stylesheet type=text/css href="{% static myapp/*.css %}" />
 
 
-// TODO: auth, Signals, 
+// TODO: describe: auth, Signals, manytoone- & manytomany relationships

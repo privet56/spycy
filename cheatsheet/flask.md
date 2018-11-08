@@ -374,8 +374,24 @@
 
 ### Pagination
 #### SqlAlchemy pagination support:
-	MyModel.query.paginate() # returns a flask_sqlachemy.Pagination object
-	MyModel.query.paginate(per_page=5, page=2) # returns the 2. page
+	ps = MyModel.query.paginate() # returns a flask_sqlachemy.Pagination object
+	ps = MyModel.query.paginate(per_page=5, page=2) # returns the 2. page
 	# flask_sqlachemy.Pagination object can page, pages, per_page, total etc.
+		
 #### in the route, calc page:
 	page = request.args.get('page', 1, type=int) # get page from url query param
+	
+#### in templates:
+	for p in ps.iter_pages():
+		#returns: 1, 2, None, 3, 4. ...
+	{% for page_num in ps.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+		{% if page_num %}
+			{% if ps.page == page_num %}
+				<a href={{ url_for('list', page=page_num) }}>{{ page_num }}</a>
+			{% else %}
+				<a href={{ url_for('list', page=page_num) }}>{{ page_num }}</a>
+			{% endif %}
+		{% else %}
+			...
+		{% endif %}
+	{% endfor %}

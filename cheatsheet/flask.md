@@ -48,7 +48,7 @@
 		#Alternative: if form.validate_on_submit():
 		if request.method == 'POST' and form.validate():
 			name = form.name.data	# or request.form['name']
-			pwd = sha256_crypt.encrypt(str(form.pwd.data))
+			pwd = sha256_crypt.encrypt(str(form.pwd.data)) # alternative: from flask_bcrypt import Bcrypt
 			cur = mysql.connection.cursor()
 			
 			# query example start
@@ -103,15 +103,21 @@
 
 ### forms.py
 	from flask_ftw import FlaskForm
+	from flask_ftw.file import FileField, FileAllowed
 	from wtfforms import StringField, SubmitField, BooleanField
-	from wtfforms.validators import DataRequired, Length, Email, EqualTo
+	from wtfforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 	class MyForm(FlaskForm):
 		name = StringField('Name', validators=[DataRequired(), Length(min=2, max=22)])
 		mail = StringField('Mail', validators=[DataRequired(), Email()])
 		pwd1 = StringField('Pwd1', validators=[DataRequired()])
 		pwd2 = StringField('Pwd2', validators=[DataRequired(), EqualTo('pwd1')]) # confirm
+		pict = FileField('prfpic', validators=[FileAllowed(['jpg','png'])])
 		remb = BooleanField('Remember Me')
 		submit = SubmitField('Submit Form')
+		def validate_name(self, name):
+			mymodel = MyModel.query.filter_by(name=name.data).first()
+			if mymodel:
+				raise ValidationError('err msg')
 
 ### data.py
 	def Data():
@@ -169,7 +175,7 @@
 		{% extends 'layout.html %}
 		{% block body %}
 		{% from "includes/_formhelpers.html" import render_field %}
-		<form method=post> # no action -> submits to same url
+		<form method=post> # no action -> submits to same url # enctype=multipart/form-data if you upload file!
 			{{ form.hidden_tag() }} # CSRF token is set here
 			
 			{{render_field(form.name, class_="form_control")}}
@@ -186,6 +192,11 @@
 			{% else %}
 				{{ form.name(class='form-control') }}
 			{% endif %}
+			
+			# file:
+			 {{ form.picture.label() }}
+			 {{ form.picture(class='form-control-file') }} # ...and errors as above
+			
 			{{ form.submit(class='btn') }}
 			
 			<input type=submit>
@@ -195,9 +206,9 @@
 
 ### static files:
 	place static files here:
-		static/{*.js | *.css}
+		static/{*.js | *.css}		# you can make subdirs
 	reference static files in the templates this way:
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='main.css') }}" />
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='subdir/main.css') }}" />
 		
 ### exec:
 	$ python3 app.py
@@ -250,4 +261,93 @@
 	./run.py						# the only purpose of this file is to start the app
 		from myapp import app
 		if __name__ = '__main__':
-			app.run(debug=True)
+			app.run(debug=True)			# debug provides helpful & detailed error pages on exception
+
+### use Bcrypt to encrypt/decrypt (alternative to passlib.hash.sha256_crypt)
+	$ pip install flask_bcrypt
+	from flask_bcrypt import Bcrypt
+	b = Bcrypt(app)
+	hashed = b.generate_password_hash(form.pwd.data).decode('utf-8') # decodes binary into test
+	b = b.check_password_hash(hashed, 'pwd')
+
+### Custom Validation
+	class MyForm(FlaskForm):
+		name = StringField('Name', validators=[DataRequired(), Length(min=2, max=22)])
+		def validate_name(self, name): # validation function pattern: validate_{fieldname}
+			if name.data != current_user.username: # current user is from flask_login (see below)
+				mymodel = MyModel.query.filter_by(name=name.data).first()
+				if mymodel:
+					raise ValidationError('err msg')
+
+### flask-login: the LoginManager
+	$ pip install flask-login
+	from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
+	import secrets
+	login_manager = LoginManager(app)
+	login_manager.login_view = 'login' 		# specify here the login route
+	login_manager.login_message_category = 'info'
+	
+	@login_manager.user_loader
+	def load_user(user_id):
+		return User.query.get(int(user_id))
+	
+	class UserModel(db.Model, UserMixin):
+		id = db.Column(db.Integer, primary_key=True)
+		name = db.Column(db.String(22, unique=True, nullable=False, default='d')) # max len: 22
+		...
+	
+	@app.route("./login", methods=['GET','POST'])
+	def login():
+		form = LoginForm()
+		if(form.validate_on_submit():
+			user = UserModel.query.filter_by(email=form.email.data).first()
+			if user and bcrypt.check_password_hash(user.pwd, user.pwd.data):
+				login_user(user, remember=form.remember.data)
+				next = request.args.get('next')	# args['next'] would throw if key does not exist
+				return redirect(url_for(next)) if next else return redirect(url_for('home'))
+			flash('failed', 'danger')
+		return render_template('login.html', title='Login', form=form)
+
+	@app.route("./data")
+	@login_required # if not logged in: redirect to login_manager.login_view
+	def data():
+		if !current_user.is_authenticated:
+			return redirect(url_for('home'))
+		return render_template('data.html', title='Secret Data', data=dataGotFromDB)
+		
+	def save_pic(pic):
+		random_hex = secrets.token_hex(8)
+		_, f_ext = os.path.splitext(pic.filename) # dont need first return value (=f_name)
+		fn = random_hex + f_ext
+		path = os.path.join(app.root_path, 'static/pix', fn) # better save in the cloud or db
+		pic.save(path)
+		return fn
+		
+	@app.route("/updateuserinfo", methods=['GET','POST'])
+	@login_required
+	def updateuserinfo():
+		form = UpdateUserInfoForm()
+		if(form.validate_on_submit():
+			if form.picture.data:
+				current_user.picfn = save_pic(form.picture.data)
+			current_user.username = form.username.data
+			current_user.email = form.email.data
+			db.session.commit()
+			flash('updated', 'success')
+			return redirect(url_for('updateuserinfo')) # post-get-redirect pattern to avoid doubled submit
+		elif request.method == 'GET':
+			form.name = current_user.username
+			form.email = current_user.email
+			return render_template('updateuserinfo.html', form=form)
+
+	@app.route("./logout")
+	def logout():
+		logout_user()
+		return redirect(url_for('home'))
+
+	In templates:
+		{% if current_user.is_authenticated %}
+			<a href="{{ url_for('logout') }}"> Logout {{ current_user.username }}</a>
+		{% else %}
+			<a href="{{ url_for('login') }}">
+		{% endif %}

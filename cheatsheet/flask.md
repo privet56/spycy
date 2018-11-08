@@ -206,4 +206,48 @@
 	$ export FLASK_DEBUG=1		# don't need to restart server to see changes
 	$ flask run
 
-// TODO: describe: flask shell
+### ORM: SqlAlchemy
+	$ pip install flask-sqlalchemy
+	from flask_sqlachemy import SQlAlchemy
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my.db'
+	db = SQlAlchemy(app)
+#### Models
+	from datetime import datetime
+	class MyModel(db.Model):
+		id = db.Column(db.Integer, primary_key=True)
+		name = db.Column(db.String(22, unique=True, nullable=False, default='d')) # max len: 22
+		date = db.Column(db.Datetime(nullable=False, default=datetime.utcnow))
+		body = db.Column(db.Text(nullable=False))
+		
+		owner_id = db.Column(db.Integer, db.ForeignKey('owner.id', nullable=False))
+		submy = db.relationship('SubMy', backref='mymodel', lazy=True)
+		
+		def __repr__(self):
+			return f"MyModel('{self.name}')"
+			
+#### use SqlAlchemy-db in the shell
+	$ python
+	$> from app import db
+	$> db.create_all()
+	$> from app import MyModel
+	$> mymodel = MyModel(name='name')
+	$> db.sesssion.add(mymodel)
+	$> db.sesssion.commit()
+	$> MyModel.query.all()
+	$> MyModel.query.first()
+	$> MyModel.query.filter_by(name='name').all()
+	$> mymodel = MyModel.query.filter_by(name='name').first()
+	$> mymodel = MyModel.query.get(1) # get by id
+	$> submy = SubMy(name='submy', owner_id = mymodel.id)
+	$> db.session.add(submy)
+	$> db.drop_all()
+	
+### Organize project in Packages (instead of Moduls, as above til now)
+	./							# my project
+	myapp/							# package of my project
+		__init__.py					# import here flask, create app & app.config & db
+		routes.py					# contains @app.route's (import app from myapp)
+	./run.py						# the only purpose of this file is to start the app
+		from myapp import app
+		if __name__ = '__main__':
+			app.run(debug=True)

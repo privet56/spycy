@@ -10,7 +10,7 @@
 ## app:
 
 ### app.py:
-	from flask import Flask, render_template, flash, redirect, url_for, session, logging, request
+	from flask import Flask, render_template, flash, redirect, url_for, session, logging, request, abort
 	from functools import wraps
 	from flask_mysqldb import MySQL
 	from wtforms import Form, StringField, TextAreaField, PasswordField, validators
@@ -30,6 +30,7 @@
 	@app.route('/')
 	@app.route('/home')	#you can decorate twice!
 	def index():
+		page = request.args.get('page', 1, type=int)
 		return render_template('index.html')
 	@app.route('/about')
 	def about():
@@ -38,9 +39,13 @@
 	def alldata():
 		form = MyForm()
 		return render_template('data.html', title='My Title', data = data, form=form)
-	@app.route('/data/<string:id>/')
+	@app.route('/data/<string:id>/update')	# string|int	# or just @app.route('/data/<id>/')
 	def data(id):
-		return render_template('data.html', id = id)
+		d = MyModel.query.get_or_404(id)
+		if d.author != current_user:
+			abort(403)
+		# link to a data: <a href={{ url_for('data', id=d.id) }}>{{d.title}}</a>
+		return render_template('data.html', title=d.title, id = id, data = d)
 	@app.route('/myform', methods=['GET','POST'])
 	@requires_roles('admin', 'user')
 	def myform():
@@ -167,7 +172,7 @@
 		{% extends 'layout.html %}
 		{% block body %}
 		{% for d in data %}
-			<a href="data/{{d.id}}">{{d.title | safe}}</a>	# safe allows html
+			<a href="data/{{d.id}}">{{d.title | safe}}</a>	# safe allows html # better use url_for
 		{% endfor %}
 		{% endblock %}
 		
@@ -243,8 +248,13 @@
 	$> from app import MyModel
 	$> mymodel = MyModel(name='name')
 	$> db.sesssion.add(mymodel)
+	$> db.session.delete(mymodel)
 	$> db.sesssion.commit()
 	$> MyModel.query.all()
+	$> MyModel.query.paginate() # returns a flask_sqlachemy.Pagination object
+	$> MyModel.query.paginate(per_page=5, page=2) # returns the 2. page
+	# flask_sqlachemy.Pagination object can page, pages, per_page, total etc.
+	# page = request.args.get('page', 1, type=int) # get page from url query param
 	$> MyModel.query.first()
 	$> MyModel.query.filter_by(name='name').all()
 	$> mymodel = MyModel.query.filter_by(name='name').first()
@@ -320,7 +330,14 @@
 		_, f_ext = os.path.splitext(pic.filename) # dont need first return value (=f_name)
 		fn = random_hex + f_ext
 		path = os.path.join(app.root_path, 'static/pix', fn) # better save in the cloud or db
-		pic.save(path)
+		#pic.save(path)
+		
+		# $ pip install Pillow	#from PIL import Image
+		output_size = (125, 125)
+		i = Image.open(pic)
+		i.thumbnail(output_size)	# resizes, scales down image
+		i.save(path)		
+
 		return fn
 		
 	@app.route("/updateuserinfo", methods=['GET','POST'])
@@ -328,6 +345,8 @@
 	def updateuserinfo():
 		form = UpdateUserInfoForm()
 		if(form.validate_on_submit():
+			if somedbvalue.author != current_user:
+				abort(403)
 			if form.picture.data:
 				current_user.picfn = save_pic(form.picture.data)
 			current_user.username = form.username.data
@@ -347,7 +366,16 @@
 
 	In templates:
 		{% if current_user.is_authenticated %}
-			<a href="{{ url_for('logout') }}"> Logout {{ current_user.username }}</a>
+			<a href="{{ url_for('logout') }}"> Logout {{ current_user.username }} </a>
+			{{ current_user.logintime.strftime('%Y-%m-%d') }}
 		{% else %}
 			<a href="{{ url_for('login') }}">
 		{% endif %}
+
+### Pagination
+#### SqlAlchemy pagination support:
+	MyModel.query.paginate() # returns a flask_sqlachemy.Pagination object
+	MyModel.query.paginate(per_page=5, page=2) # returns the 2. page
+	# flask_sqlachemy.Pagination object can page, pages, per_page, total etc.
+#### in the route, calc page:
+	page = request.args.get('page', 1, type=int) # get page from url query param

@@ -41,7 +41,15 @@
 		return render_template('data.html', title='My Title', data = data, form=form)
 	@app.route('/data/<string:id>/update')	# string|int	# or just @app.route('/data/<id>/')
 	def data(id):
+	
 		d = MyModel.query.get_or_404(id)
+		# or:
+		d = MyModel.query.filter_by(name=name).first_or_404()
+		#or: 
+		d = MyModel.query.filter_by(name=name)\
+			.order_by(MyModel.date.desc())\
+			.paginate(page, per_page=5)
+			
 		if d.author != current_user:
 			abort(403)
 		# link to a data: <a href={{ url_for('data', id=d.id) }}>{{d.title}}</a>
@@ -375,7 +383,7 @@
 ### Pagination
 #### SqlAlchemy pagination support:
 	ps = MyModel.query.paginate() # returns a flask_sqlachemy.Pagination object
-	ps = MyModel.query.paginate(per_page=5, page=2) # returns the 2. page
+	ps = MyModel.query.order_by(MyModel.date.desc()).paginate(per_page=5, page=2) # returns the 2. page
 	# flask_sqlachemy.Pagination object can page, pages, per_page, total etc.
 		
 #### in the route, calc page:
@@ -387,11 +395,32 @@
 	{% for page_num in ps.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 		{% if page_num %}
 			{% if ps.page == page_num %}
-				<a href={{ url_for('list', page=page_num) }}>{{ page_num }}</a>
+				<a href={{ url_for('list', page=page_num) }} class="btn btn-info mb-4">{{ page_num }}</a>
 			{% else %}
-				<a href={{ url_for('list', page=page_num) }}>{{ page_num }}</a>
+				<a href={{ url_for('list', page=page_num) }} class="btn btn-outline-info mb-4">{{ page_num }}</a>
 			{% endif %}
 		{% else %}
 			...
 		{% endif %}
 	{% endfor %}
+
+### Signatures & Email
+#### Signature: with itsdangerous (installed with flask by default)
+	from itsdangerous import TimedJSONWebSignatureSerializer as Ser
+	s = Ser('secret', 30) # expiration: 30 seconds
+	payload_in = {'user_id':user.id}
+	token = s.dumps(payload_in).decode('utf-8') #token is a long string
+	try:					# prepare for expired or wrong token input
+		payload_out = s.loads(token)	# payload_out == payload_in
+	except:
+		return None
+
+#### Email
+	$ pip install flask-mail
+	
+	from flask_mail import Mail
+	app.config
+	
+	@staticmethod
+	def sendemail(user):
+		

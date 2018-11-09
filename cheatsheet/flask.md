@@ -271,15 +271,54 @@
 	$> db.session.add(submy)
 	$> db.drop_all()
 	
-### Organize project in Packages (instead of Moduls, as above til now)
+### Organize project in Packages (instead of Modules, as above til now) (package dirs have __init__.py)
 	./							# my project
-	myapp/							# package of my project
+	
+	./models.py
+	
+	./config.py						# contains all former app.config[*] entries
+		class Config:
+			SQLALCHEMY_DATABASE_URI = 'sqlite:///side.db'
+			MAIL_USERNAME = os.environ.get('EMAIL_USER')
+			...
+
+	./myapp/						# Package of my project
 		__init__.py					# import here flask, create app & app.config & db
-		routes.py					# contains @app.route's (import app from myapp)
+		routes.py					# contains @.route's (import app from myapp)
+			from flask import Blueprint
+			main = Blueprint('main', __name__)
+			@main.route("/home", ...
+			
+	./users/						# Example Package
+		__init__.py
+		routes.py					# contains @.route's of users
+			from flask import Blueprint
+			from myapp.users.utils import myutilfunction
+			from myapp.models import MyModel
+			users = Blueprint('users', __name__)
+			@users.route("/login", ...
+		forms.py
+		utils.py
+		
 	./run.py						# the only purpose of this file is to start the app
+		from flask import current_app
 		from myapp import app
+		from myapp.config import Config
+		from myapp.main.routes import main		# 'main' is a Blueprint object
+		from myapp.user.routes import users		# 'users' is a Blueprint object
+		def create_app(config_class=Config):
+			app = Flask(__name__)				# access 'app' later as current_app
+			db.init_app(app)
+			*.init_app(app)
+			app.config.from_object(Config) 			# the Flask 'app' object uses the Config object
+			app.register_blueprint(main)
+			app.register_blueprint(users)
 		if __name__ = '__main__':
-			app.run(debug=True)			# debug provides helpful & detailed error pages on exception
+			app = create_app()				# function call uses default param val
+			current_app.run(debug=True)			# debug provides helpful & detailed error pages on exception
+			
+	Attention: with Packages & Blueprint, you need to do your links by specifying the package name, e.g.:
+		url_for("users.login")
 
 ### use Bcrypt to encrypt/decrypt (alternative to passlib.hash.sha256_crypt)
 	$ pip install flask_bcrypt
@@ -418,9 +457,31 @@
 #### Email
 	$ pip install flask-mail
 	
-	from flask_mail import Mail
-	app.config
+	from flask_mail import Mail, Message
+	app.config["MAIL_SERVER"] = 'smtp.google.com'
+	app.config["MAIL_PORT"] = '587'
+	app.config["MAIL_USE_TLS"] = True
+	app.config["MAIL_USERNAME"] = os.environ.get('EMAIL_USER')
+	app.config["MAIL_PASSWORD"] = os.environ.get('EMAIL_PASS')
 	
 	@staticmethod
 	def sendemail(user):
-		
+		msg = Message('subject', sender='noreply@my.com', recipients=[user.email])
+		msg.body = f''' email content {url_for('home', param=param, _external=True)} '''
+		mail.send(msg)
+
+### Custom Error Pages as Package
+	./errors/
+		__init__.py
+		handlers.py
+			from flask import Blueprint
+			errors = Blueprint('errors', __name__)
+			@errors.app_errorhandler(404)
+			def error_404(error):					# in the template, you can use your layout
+				return render_template('errors/404.html'), 404	# 404 is the response error code
+				
+	./__init__.py or main.py
+		from myapp.errors.handlers import errors
+		app.register_blueprint(errors)
+
+// TODO: describe: unit tests

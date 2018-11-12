@@ -111,20 +111,27 @@ http://localhost:8000/admin/	#admin ui
 			{% endblock %}
 			<a href="{% url 'detail' mydata.id %}">{{mydata.title}}</a>
 			<a href="{% url 'myapp:detail' mydata.id %}">{{mydata.title}}</a>	# namespace (->app_name)
+			
 	# myapp/models.py
 		from django.db import models
+		from django.db.signals import post_save
 		from datetime import datetime
 		from django.utils import timezone
+
 		class Mymodel(models.Model):				# pk (primary key) is created automatically by base
-			title = models.CharField(max_length=222)
+			title = models.CharField(max_length=222, default='')
 			body = models.TextField()			# there is also IntegerField
+			webs = models.URLField(default='')
+			
 			created_at = models.DateTimeField(default=datetime.now, blank=True)		# or do TZ-aware!
 			# relation to another model, you get access functions like mymodel.submymodel_set.all
 			# submy = models.ForeignKey(SubMyModel, on_delete=models.CASCADE)
+			# submy = models.OneToOneField(SubMyModel)
 			def __str__(self):
 				return self.title
 			class Meta:
 				verbose_name_plural = "Mymodels"
+				
 	# myapp/admin.py
 		from .models import Mymodel
 		admin.site.register(Mymodel)			# will be shown on the admin ui, editably
@@ -223,4 +230,34 @@ http://localhost:8000/admin/	#admin ui
 	Whoosh & Haystack	# Indexing & Search capability
 	json				# python object-to-json converter, json.dumps(...)
 
-// TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions
+## Advanced Issues:
+### Use nosql
+	Most used implementation: MongoDB
+### API (SOAP, REST or GraphQL)
+	Simplifies server-side development, can serve different front-ends
+### real-time updates
+	Use websockets
+### Microservices, Ajax & SPA, Responsive/Mobile Support
+	Use JSON-API on the server
+### Isomorphic JS development
+	Brython, Skulpt or PyPy.js
+		You need a compiler to convert PY to JS
+	Batavia
+		Can run python bytecode (.pyc) in the browser
+		WASM as target can reach lightning fast execution
+			(WASM has no GC, hard to access the DOM)
+
+## Signals
+### built-in Signals
+	from django.db.signals import post_save
+	
+	def on_create_mymodel(sender, **kwargs):
+		if kwargs['created']:
+			p = Mymodel.objects.create(mymodel=kwargs['instance'])
+	
+	post_save.connect(on_create_mymodel, sender=Mymodel)
+
+### User-defined Signals
+
+	
+// TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions, Form Mixins

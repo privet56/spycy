@@ -208,5 +208,19 @@ http://localhost:8000/admin/	#admin ui
 		{% load static %}
 		<link rel=stylesheet type=text/css href="{% static myapp/*.css %}" />
 
+## Most used pipes:
+	safe
+	linebreaksbr
+	escape
+	escapejs
+	stringformat
+	trans
+
+## Most used 3rd party libs
+	Pillow / PIL		# image editing package
+	xhtml2pdf			# generates PDF from XHTML templates
+	crispy				# better designable Forms (e.g. with Bootstrap 3)
+	Whoosh & Haystack	# Indexing & Search capability
+	json				# python object-to-json converter, json.dumps(...)
 
 // TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions

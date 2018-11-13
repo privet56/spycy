@@ -456,3 +456,19 @@ http://localhost:8000/admin/	#admin ui
 	# with mail settings:
 	EMAIL_HOST = 'localhost'
 	EMAIL_PORT = 1025
+
+## Custom Middleware (settings.py MIDDLEWARE_CLASSES)
+	from django.config import settings
+	class MyMiddleware:
+		def __init__(self, get_response):
+			self.get_response = get_response
+		def __call__(self, request):
+			resp = self.get_response(request)
+			return resp
+		def process_view(self, request, view_func, view_args, view_kwargs):
+			assert hasattr(request, 'user')
+			if not request.user.is_authenticated():
+				path = request.path_info.lstrip('/')
+				if not any(url.match(path) for url in exempt_urls):
+					return redirect(settings.LOGIN_URL)
+			return None

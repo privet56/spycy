@@ -230,7 +230,8 @@ http://localhost:8000/admin/	#admin ui
 	crispy				# better designable Forms (e.g. with Bootstrap 3)
 	Whoosh & Haystack	# Indexing & Search capability
 	json				# python object-to-json converter, json.dumps(...)
-		(better: django serializer)
+		(better: django or djangorestframework serializer)
+	xlwt				# generates Excel
 
 ## Advanced Issues:
 ### Use nosql
@@ -261,8 +262,19 @@ http://localhost:8000/admin/	#admin ui
 	post_save.connect(on_create_mymodel, sender=Mymodel)
 
 ### User-defined Signals
-	//TODO
-
+#### define Signal:
+	from django.dispatch import Signal
+	order_complete = Signal(providng_args=["customer","barista"])
+	store_closed = Signal(providing_args=["employee"])
+#### emit Signal:
+	store_closed.send(sender=self.__class__, employee=employee)
+#### receive Signal:
+	@receiver(store_closed)
+	def run_when_store_is_closed(sender,**kwargs):
+		stdlogger.info("Start store_closed Store in signals.py under stores app")
+		stdlogger.info("sender %s" % (sender))
+		stdlogger.info("kwargs %s" % str(kwargs))
+	
 ## Authentication & Authorization
 	from django.contrib.auth.views import login, logout
 	urlpatterns = [
@@ -286,14 +298,155 @@ http://localhost:8000/admin/	#admin ui
 				user.save()
 			return user
 
+#### Auth Middleware:
+	MIDDLEWARE_CLASSES = (
+	# …
+		"django.contrib.auth.middleware.AuthenticationMiddleware",
+	)
+			
+#### Restrict access to protected pages:
+	from django.contrib.auth.decorators import login_required
+	@login_required
+	@login_required(login_url="my_login_page")
+	def data(request):
+	
+#### Apache configuration: deny direct access to data/templates:
+	# data/.htaccess
+	Order deny,allow
+	Deny from all
+  You can put the following content if you are using Apache 2.4:
+	# data/.htaccess
+	Require all denied
 	
 ## User defined Tags and Filter
-	//TODO
+### Custom Template Tag
+	# -*- coding: UTF-8 -*-
+	from __future__ import unicode_literals
+	from django import template
+	from django.template.loader import get_template
+	register = template.Library()
+	@register.tag
+	def try_to_include(parser, token):
+		pass
+		
+### Custom Filter:
+	# utils/templatetags/utility_tags.py
+	@register.filter
+	def days_since(value):
+		""" Returns number of days between today and value."""
+		today = tz_now().date()
+		if isinstance(value, datetime.datetime):
+			value = value.date()
+		diff = today - value
+		if diff.days > 1:
+			return _("%s days ago") % diff.days
+		elif diff.days == 1:
+			return _("yesterday")
+		elif diff.days == 0:
+			return _("today")
+		else:
+			# Date is in the future; return formatted date.
+			return value.strftime("%B %d, %Y")
+		
+	Usage:
+	{% load utility_tags %}
+	{{ object.published|days_since }}
 
 ## i18n
-	pipe: trans
-	import ... as _
-	//TODO
+### Pipe: trans (in Templates)
+	{% load i18n %}
+	{% load i18n utility_tags %}
+	{% load i18n crispy_forms_tags utility_tags %} #with crispy forms
+	{% trans "Save" %}
 
+### in Python code:
+	from django.conf.urls.i18n import i18n_patterns
+	from django.utils.translation import ugettext_lazy as _
+	...
+	return _("yesterday")
+	
+## Do REST with djangorestframework
+	# config apps:
+	INSTALLED_APPS = ['rest_framework' ...
+	# config routes:
+	router = routers.DefaultRouter()
+	router.register(r'stores', stores_views.StoreViewSet)
+	urlpatterns = [
+		url(r'^rest/', include(router.urls,namespace="rest")),
+	# config Authentication:
+	rest_framework.permissions
+	REST_FRAMEWORK = {
+		'DEFAULT_PERMISSION_CLASSES': (
+			...
+	
+	# usage:
+	from rest_framework import serializers
+	from rest_framework import generics
+	from rest_framework import viewsets
+	from rest_framework import routers
+	from rest_framework.decorators import api_view, permission_classes
+	from rest_framework.permissions import IsAuthenticated
+	from rest_framework.response import Response
+	
+	@api_view(['GET','POST','DELETE'])
+	def rest_store(request):
+		if request.method == 'GET':
+			stores = Store.objects.all()
+			serializer = StoreSerializer(stores, many=True)
+			return Response(serializer.data)
+		...
 
-// TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions, Form Mixins, djangorestframework
+	# implement your REST API View class:
+	class StoreList(APIView):
+		permission_classes = (IsAuthenticated,)
+		queryset = Store.objects.all()
+		serializer_class = StoreSerializer
+		def get(self, request, format=None):
+			stores = Store.objects.all()
+			serializer = StoreSerializer(stores, many=True)
+			return Response(serializer.data)
+		def post(self, request, format=None):
+		...
+
+	# implement your REST API View class:
+	class RESTMyList(generics.ListCreateAPIView):
+		#do!
+
+## Model Relationships
+
+### define relationship:
+	from django.db import models
+	class MyModel(models.Model):
+		mysub = models.ForeignKey(MySubModel) # optional: on_delete=models.CASCADE
+		mysub = models.OneToOneField(MySubModel, on_delete=models.CASCADE|.DO_NOTHING, primary_key=True)
+		mysubs = models.ManyToManyField(MySubModel,blank=True)
+		#reference to the same model: use 'self'
+		my = models.ForeignKey('self')
+		mys = models.ManyToManyField('self')
+### use relationship:
+	all_mymodels_with_subs = MyModel.objects.filter(mysub=mysubval, (price__gt=1)
+	# Reverse access through instance
+	all_mymodels_with_subs = mysubval.mymodel_set.all()
+	# output generated SQL
+	stdlogger.debug("Query %s" % str(all_mymodels_with_subs.query))
+	# You can also use print(all_mymodels_with_subs.query)
+
+### Class based Views with django Mixins:
+	# useful Mixins:
+	django.views.generic.detail.SingleObjectTemplateResponseMixin
+	django.views.generic.base.TemplateResponseMixin
+	django.views.generic.edit.BaseCreateView
+	django.views.generic.edit.ModelFormMixin
+	django.views.generic.edit.FormMixin
+	django.views.generic.detail.SingleObjectMixin
+	django.views.generic.edit.ProcessFormView
+	from django.views.generic.list import ListView, UpdateView, DetailView
+	django.views.generic.base.View
+	# example mixin usage:
+	from django.views.generic.edit import CreateView
+	from django.contrib.messages.views import SuccessMessageMixin
+	class MyModelCreation(SuccessMessageMixin,CreateView):
+		model = MyModel
+		form_class = MyModelForm
+		success_url = reverse_lazy('mymodels:index')
+		success_message = "MyModel %(name)s created successfully"

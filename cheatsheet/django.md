@@ -314,7 +314,7 @@ http://localhost:8000/admin/	#admin ui
 	# data/.htaccess
 	Order deny,allow
 	Deny from all
-  You can put the following content if you are using Apache 2.4:
+		You can put the following content if you are using Apache 2.4:
 	# data/.htaccess
 	Require all denied
 	

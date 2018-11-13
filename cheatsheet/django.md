@@ -287,7 +287,7 @@ http://localhost:8000/admin/	#admin ui
 	from django.contrib.auth.models import User
 	from django.contrib.auth.forms import UserCreationForm
 	class MyRegForm(UserCreationForm):				# we can use this form in your urlpatterns-route
-		email = models.EmailField(required=True)	# we override this field and make it required
+		email = models.EmailField(required=True)		# we override this field and make it required
 		class Meta:
 			model = User
 			fields = ('name', 'email', ...)

@@ -56,7 +56,8 @@ http://localhost:8000/admin/	#admin ui
 		from django.urls import path
 		app_name = "myapp"					# namespace!
 		urlpatterns = [
-			url(r'^$', views.index, name='index'),		#views.index -> views.py: def index(request):
+			#views.index -> views.py: def index(request):
+			url(r'^$', views.index, name='index'),
 			url(r'^details/(?P<id>\d+)/$', views.details, name='details')
 			#path('', views.index)				# this syntax is for a newer django release
 			#path('details/<int:id>/', views.details, name='details')
@@ -64,7 +65,7 @@ http://localhost:8000/admin/	#admin ui
 
 	# edit myapp/views.py
 		from django.http import HttpResponse, Http404, reverse
-		from django.shortcuts import render, get_object_or_404
+		from django.shortcuts import render, get_object_or_404, redirect
 		from django.template import loader
 		from .models import Mymodel			#from . import models
 		def index(request):
@@ -229,12 +230,14 @@ http://localhost:8000/admin/	#admin ui
 	crispy				# better designable Forms (e.g. with Bootstrap 3)
 	Whoosh & Haystack	# Indexing & Search capability
 	json				# python object-to-json converter, json.dumps(...)
+		(better: django serializer)
 
 ## Advanced Issues:
 ### Use nosql
 	Most used implementation: MongoDB
 ### API (SOAP, REST or GraphQL)
 	Simplifies server-side development, can serve different front-ends
+	use djangorestframework
 ### real-time updates
 	Use websockets
 ### Microservices, Ajax & SPA, Responsive/Mobile Support
@@ -253,11 +256,44 @@ http://localhost:8000/admin/	#admin ui
 	
 	def on_create_mymodel(sender, **kwargs):
 		if kwargs['created']:
-			p = Mymodel.objects.create(mymodel=kwargs['instance'])
+			p = Mymodel2.objects.create(mymodel=kwargs['instance'])
 	
 	post_save.connect(on_create_mymodel, sender=Mymodel)
 
 ### User-defined Signals
+	//TODO
+
+## Authentication & Authorization
+	from django.contrib.auth.views import login, logout
+	urlpatterns = [
+		url(r'^login/$', login, {'template_name':'accounts/login.html'}),
+		url(r'^logout/$', logout, {'template_name':'accounts/logout.html'}),
+		...
+	in templates, 'form' is available
+	
+### you can inherit from the built-in UserCreationForm
+	from django.contrib.auth.models import User
+	from django.contrib.auth.forms import UserCreationForm
+	class MyRegForm(UserCreationForm):				# we can use this form in your urlpatterns-route
+		email = models.EmailField(required=True)	# we override this field and make it required
+		class Meta:
+			model = User
+			fields = ('name', 'email', ...)
+		def save(self, commit=True):				# we override the save function
+			user = super(MyRegForm, self).save(commit=False)
+			user.first_name = self.cleaned_data['first_name']
+			if commit:
+				user.save()
+			return user
 
 	
-// TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions, Form Mixins
+## User defined Tags and Filter
+	//TODO
+
+## i18n
+	pipe: trans
+	import ... as _
+	//TODO
+
+
+// TODO: describe: auth, Signals, ORM: manytoone- & manytomany relationships .query, aggregation functions, Form Mixins, djangorestframework

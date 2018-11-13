@@ -431,7 +431,7 @@ http://localhost:8000/admin/	#admin ui
 	stdlogger.debug("Query %s" % str(all_mymodels_with_subs.query))
 	# You can also use print(all_mymodels_with_subs.query)
 
-### Class based Views with django Mixins:
+## Class based Views with django Mixins:
 	# useful Mixins:
 	django.views.generic.detail.SingleObjectTemplateResponseMixin
 	django.views.generic.base.TemplateResponseMixin
@@ -450,3 +450,9 @@ http://localhost:8000/admin/	#admin ui
 		form_class = MyModelForm
 		success_url = reverse_lazy('mymodels:index')
 		success_message = "MyModel %(name)s created successfully"
+
+## Fake Email server for development purposes:
+	$ python -m smtpd -n -c Debuggingserver localhost:1025
+	# with mail settings:
+	EMAIL_HOST = 'localhost'
+	EMAIL_PORT = 1025

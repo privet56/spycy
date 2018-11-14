@@ -58,6 +58,7 @@ http://localhost:8000/admin/	#admin ui
 		urlpatterns = [
 			#views.index -> views.py: def index(request):
 			url(r'^$', views.index, name='index'),
+			url(r"^$", lambda request: redirect("/home")),
 			url(r'^details/(?P<id>\d+)/$', views.details, name='details')
 			#path('', views.index)				# this syntax is for a newer django release
 			#path('details/<int:id>/', views.details, name='details')
@@ -118,6 +119,7 @@ http://localhost:8000/admin/	#admin ui
 		from django.db.signals import post_save
 		from datetime import datetime
 		from django.utils import timezone
+		from django.utils.text import slugify
 
 		class Mymodel(models.Model):				# pk (primary key) is created automatically by base
 			title = models.CharField(max_length=222, default='')
@@ -231,14 +233,14 @@ http://localhost:8000/admin/	#admin ui
 	Whoosh & Haystack	# Indexing & Search capability
 	json				# python object-to-json converter, json.dumps(...)
 		(better: django or djangorestframework serializer)
-	xlwt				# generates Excel
+	xlrd/xlwt			# reads/generates Excel
 
 ## Advanced Issues:
 ### Use nosql
 	Most used implementation: MongoDB
 ### API (SOAP, REST or GraphQL)
 	Simplifies server-side development, can serve different front-ends
-	use djangorestframework
+	use djangorestframework (newer than ?pie)
 ### real-time updates
 	Use websockets
 ### Microservices, Ajax & SPA, Responsive/Mobile Support
@@ -414,6 +416,18 @@ http://localhost:8000/admin/	#admin ui
 
 ## Model Relationships
 
+### Model implementation: django.db
+	MyModel.objects functions:
+		.get_or_create(...)	# return: myModelObj, is_created
+		.order_by('-title')
+		.all()
+		.filter(title=mytitleval, type=mytypeval, groups__name=mynameval).count()
+		.get_for_model(obj)
+		.get(id=myidval)	# throws if not found
+		.create(...)
+		.annotate(...)
+		.count()
+
 ### define relationship:
 	from django.db import models
 	class MyModel(models.Model):
@@ -472,3 +486,35 @@ http://localhost:8000/admin/	#admin ui
 				if not any(url.match(path) for url in exempt_urls):
 					return redirect(settings.LOGIN_URL)
 			return None
+
+## Command
+	# -*- coding: UTF-8 -*-
+	from __future__ import unicode_literals
+	import csv
+	from django.core.management.base import BaseCommand
+	
+	SILENT, NORMAL, VERBOSE, VERY_VERBOSE = 0, 1, 2, 3
+
+	# File: my_command.py
+	class MyCommand(BaseCommand):
+		help = (
+			"My Command help text. "
+			"My Command help text. "
+		)
+		def add_arguments(self, parser):
+			# Positional arguments
+			parser.add_argument(
+				"file_path",
+				nargs=1,
+				type=unicode,
+			)
+		def handle(self, *args, **options):
+			verbosity = options.get("verbosity", NORMAL)
+			file_path = options["file_path"][0]
+			
+			if verbosity >= NORMAL:
+				self.stdout.write("=== Working... ===")
+			...
+			
+	# Call:
+	python manage.py my_command data/my.csv

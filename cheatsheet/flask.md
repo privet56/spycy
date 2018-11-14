@@ -112,7 +112,7 @@
 	
 	if __name__ == '__main__':
 		app.secret_key = 'mysecret'	# session needs it
-		app.run(debug=True)
+		app.run(port=5555, debug=True)
 
 ### forms.py
 	from flask_ftw import FlaskForm
@@ -315,7 +315,7 @@
 			app.register_blueprint(users)
 		if __name__ = '__main__':
 			app = create_app()				# function call uses default param val
-			current_app.run(debug=True)			# debug provides helpful & detailed error pages on exception
+			current_app.run(port=5555, debug=True)			# debug provides helpful & detailed error pages on exception
 			
 	Attention: with Packages & Blueprint, you need to do your links by specifying the package name, e.g.:
 		url_for("users.login")
@@ -484,4 +484,33 @@
 		from myapp.errors.handlers import errors
 		app.register_blueprint(errors)
 
+## WSGI
+### Install system packages (here, for ubuntu)
+	$ sudo apt-get update
+	$ sudo apt-get install python-pip
+	$ pip install --user Flask
+	$ sudo apt-get install apache2
+	$ sudo apt-get install libapache2-mod-wsgi
+	
+	$ sudo chown -R tom /var/www		# set access rights
+	$ sudo chown –R tom /etc/apache2
+	
+### myapp.wsgi
+	import sys
+	sys.path.insert(0, "/var/www/myapp")
+	from myapp import app as application
+
+###  /etc/apache2/sites-available/myapp.conf
+	<VirtualHost *>
+		 ServerName example.com
+		 WSGIScriptAlias / /var/www/myapp/my.wsgi
+		 WSGIDaemonProcess my
+		 <Directory /var/www/myapp>
+			 WSGIProcessGroup my
+			 WSGIApplicationGroup %{GLOBAL}
+			 Order deny,allow
+			 Allow from all
+		 </Directory>
+	</VirtualHost>
+	
 // TODO: describe: unit tests

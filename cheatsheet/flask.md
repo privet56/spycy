@@ -496,11 +496,25 @@
 	$ sudo chown –R tom /etc/apache2
 	
 ### myapp.wsgi
-	import sys
+	import os, sys, site
 	sys.path.insert(0, "/var/www/myapp")
 	from myapp import app as application
+	## django needs/can more!
+	#site.addsitedir(other_path)
+	#os.environ["DJANGO_SETTINGS_MODULE"] = "myproject.settings"
+	#from django.core.wsgi import get_wsgi_application
+	#application = get_wsgi_application()
 
 ###  /etc/apache2/sites-available/myapp.conf
+
+	Options -Indexes
+	AliasMatch ^/static/\d+/(.*) \
+		"/home/myapp/app/myapp/static/$1"
+	<FilesMatch "\.(ico|pdf|flv|jpe?g|png|gif|js|css|swf)$">
+		ExpiresActive On
+		ExpiresDefault "access plus 1 year"
+	</FilesMatch>
+
 	<VirtualHost *>
 		 ServerName example.com
 		 WSGIScriptAlias / /var/www/myapp/my.wsgi
@@ -512,5 +526,36 @@
 			 Allow from all
 		 </Directory>
 	</VirtualHost>
+	
+	$ /etc/init.d/apache2 restart
+
+#### /home/myapp/public_html/.htaccess - optional
+	AddHandler wsgi-script .wsgi
+	DirectoryIndex index.html
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME}/index.html !-f
+	RewriteCond %{REQUEST_URI} !^/media/
+	RewriteCond %{REQUEST_URI} !^/static/
+	RewriteRule ^(.*)$ /my.wsgi/$1 [QSA,L]
+
+###  MySQL settings: /etc/mysql/my.cnf
+	[client]
+	default-character-set = utf8
+	[mysql]
+	default-character-set = utf8
+	[mysqld]
+	collation-server = utf8_unicode_ci
+	init-connect = 'SET NAMES utf8'
+	character-set-server = utf8
+	
+	$ /etc/init.d/mysql restart
+
+###
+	$ sudo a2dissite 000-default.conf
+	$ sudo a2ensite my.conf
+	$ sudo service apache2 reload
+	$ sudo tail –f /var/log/apache2/error.log
 	
 // TODO: describe: unit tests

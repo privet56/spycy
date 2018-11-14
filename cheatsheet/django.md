@@ -38,6 +38,10 @@ http://localhost:8000/admin/	#admin ui
 	$ python manage.py runserver
 	$ python manage.py createsuperuser --username=myname --email=my@my.com	#prompts for pwd
 	$ python manage.py startapp myapp
+	$ python manage.py cleanup --traceback
+	$ python manage.py collectstatic
+	$ python manage.py syncdb/flush/reset myapp
+	$ python manage.py check				# togheter with from django.core.checks import ...
 	$ python manage.py test myapp				# exec myapp/tests.test_*
 	$ python manage.py shell				# you can write python on the shell
 		# from myapp.models import Mymodel
@@ -234,13 +238,17 @@ http://localhost:8000/admin/	#admin ui
 	json				# python object-to-json converter, json.dumps(...)
 		(better: django or djangorestframework serializer)
 	xlrd/xlwt			# reads/generates Excel
+	django-mobile		# sets request.flavour =?= "mobile"
+	python-memcached	# settings.py: CACHE @vary_on_cookie & @cache_page(60)
+	selenium & mock		# unit & integration tests
+	fabric				# depoyment script: fabfile.py
 
 ## Advanced Issues:
 ### Use nosql
 	Most used implementation: MongoDB
 ### API (SOAP, REST or GraphQL)
 	Simplifies server-side development, can serve different front-ends
-	use djangorestframework (newer than ?pie)
+	use djangorestframework (newer than tastypie)
 ### real-time updates
 	Use websockets
 ### Microservices, Ajax & SPA, Responsive/Mobile Support
@@ -268,8 +276,18 @@ http://localhost:8000/admin/	#admin ui
 	from django.dispatch import Signal
 	order_complete = Signal(providng_args=["customer","barista"])
 	store_closed = Signal(providing_args=["employee"])
+	
+#### import at AppConfig:ready:
+	from django.apps import AppConfig
+	class MyAppConfig(AppConfig):
+		name = "my"
+		verbose_name = _("My")
+		def ready(self):
+			from .checks import settings_check
+			
 #### emit Signal:
 	store_closed.send(sender=self.__class__, employee=employee)
+	
 #### receive Signal:
 	@receiver(store_closed)
 	def run_when_store_is_closed(sender,**kwargs):
@@ -334,6 +352,7 @@ http://localhost:8000/admin/	#admin ui
 ### Custom Filter:
 	# utils/templatetags/utility_tags.py
 	@register.filter
+	@register.filter(name="humanized_days_since") # you can name your filter
 	def days_since(value):
 		""" Returns number of days between today and value."""
 		today = tz_now().date()
@@ -349,10 +368,22 @@ http://localhost:8000/admin/	#admin ui
 		else:
 			# Date is in the future; return formatted date.
 			return value.strftime("%B %d, %Y")
+
+	@register.filter
+	def humanize_url(url, letter_count):
+		""" Returns a shortened human-readable URL """
+		letter_count = int(letter_count)
+		re_start = re.compile(r"^https?://")
+		re_end = re.compile(r"/$")
+		url = re_end.sub("", re_start.sub("", url))
+		if len(url) > letter_count:
+			url = "%s…" % url[:letter_count - 1]
+		return url
 		
 	Usage:
 	{% load utility_tags %}
 	{{ object.published|days_since }}
+	{{ object.website|humanize_url:30 }}
 
 ## i18n
 ### Pipe: trans (in Templates)
@@ -425,8 +456,11 @@ http://localhost:8000/admin/	#admin ui
 		.get_for_model(obj)
 		.get(id=myidval)	# throws if not found
 		.create(...)
-		.annotate(...)
+		.annotate(...)		# allows to add extra columns, eg. aggregations
 		.count()
+	models.F(colName)		# reference db field
+	models.Case/.When/.Value
+	
 
 ### define relationship:
 	from django.db import models
@@ -518,3 +552,46 @@ http://localhost:8000/admin/	#admin ui
 			
 	# Call:
 	python manage.py my_command data/my.csv
+
+## Unit- & Integration Tests
+	$ pip install selenium mock
+	from django.test import LiveServerTestCase
+	from django.test import SimpleTestCase
+	class MyTest(SimpleTestCase):
+		@classmethod
+		def setUpClass(cls):
+			super(MyTest, cls).setUpClass()
+			# set up db ...
+			
+		@classmethod
+		def tearDownClass(cls):
+			super(MyTest, cls).tearDownClass()
+			cls.mycreateddata.delete()
+
+		def test_my(self):
+			mock_request = mock.Mock()
+			mock_request.user = self.superuser
+			mock_request.method = "POST"
+			response = call
+			expected_result = json.dumps({
+				"success": True
+			})
+			self.assertJSONEqual(
+				response.content,
+				expected_result
+			)
+### Test of API's
+	from rest_framework.test import APITestCase
+	class MyTest(APITestCase):								# has setUpClass & tearDownClass, too
+		def test_my(self):
+			self.client.force_authenticate(user=self.superuser)
+			url = reverse("rest_list")
+			data = {}
+			response = self.client.get(url, data, format="json")
+			self.assertEqual(
+				response.status_code, status.HTTP_200_OK	# HTTP_201_CREATED, HTTP_403_FORBIDDEN etc.
+			)
+			self.assertEqual(
+				response.data["count"], 3
+			)
+			self.client.force_authenticate(user=None)		# logout

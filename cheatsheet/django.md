@@ -296,10 +296,10 @@ http://localhost:8000/admin/	#admin ui
 		stdlogger.info("kwargs %s" % str(kwargs))
 	
 ## Authentication & Authorization
-	from django.contrib.auth.views import login, logout
+	from django.contrib.auth.views import login, logout, password_reset
 	urlpatterns = [
-		url(r'^login/$', login, {'template_name':'accounts/login.html'}),
-		url(r'^logout/$', logout, {'template_name':'accounts/logout.html'}),
+		url(r'^login/$', login, {'template_name':'accounts/login.html'}, name="login"),
+		url(r'^logout/$', logout, {'template_name':'accounts/logout.html', 'post_reset_redirect':'myapp:password_reset_done'}, name="logout"),
 		...
 	in templates, 'form' is available
 	

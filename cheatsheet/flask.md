@@ -558,4 +558,15 @@
 	$ sudo service apache2 reload
 	$ sudo tail –f /var/log/apache2/error.log
 	
-// TODO: describe: unit tests
+### advanced API: make_response
+	from flask import make_response
+	
+	@app.route('/')
+	def index():
+		pubQueryA = request.args.get("publication")
+		pubCookie = request.cookies.get("publication")
+		response = make_response(render_template("home.html", articles=articles)
+		expires = datetime.datetime.now() + datetime.timedelta(days=365)
+		response.set_cookie("publication", publication, expires=expires)
+		response.set_cookie("city", city, expires=expires)
+		return response

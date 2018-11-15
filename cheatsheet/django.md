@@ -30,6 +30,7 @@
 		urlpatterns = [
 			url(r'^admin/', admin.site.urls),
 			...
+		] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 		
 http://localhost:8000/admin/	#admin ui
 
@@ -53,7 +54,7 @@ http://localhost:8000/admin/	#admin ui
 	# add to INSTALLED_APPS
 	# extend urls.py:
 		from django.conf.urls import url, include
-		url(r'^myapp/', include('myapp.urls'))
+		url(r'^myapp/', include('myapp.urls'), namespace="myapp")
 	# create myapp/urls.py
 		from django.conf.urls import url, include
 		from . import views
@@ -127,10 +128,11 @@ http://localhost:8000/admin/	#admin ui
 
 		class Mymodel(models.Model):				# pk (primary key) is created automatically by base
 			title = models.CharField(max_length=222, default='')
-			body = models.TextField()			# there is also IntegerField
+			image = models.ImageField(upload_to='img', blank=True) # you can refer to it with mymodel.image.url
+			body = models.TextField()			# there is also IntegerField,URLField
 			webs = models.URLField(default='')
 			
-			created_at = models.DateTimeField(default=datetime.now, blank=True)		# or do TZ-aware!
+			created_at = models.DateTimeField(default=datetime.now, blank=True)		# or do TZ-aware! possible param: auto_now_add=True, auto_now=True
 			# relation to another model, you get access functions like mymodel.submymodel_set.all
 			# submy = models.ForeignKey(SubMyModel, on_delete=models.CASCADE)
 			# submy = models.OneToOneField(SubMyModel)
@@ -166,7 +168,7 @@ http://localhost:8000/admin/	#admin ui
 			<input type=submit value=update>
 		</form>
 	
-# Generic view:
+# Generic view = class based view:
 	myapp/urls.py:
 		path('', views.IndexView.as_view(), name='index')
 		path('<int:pk>', views.DetailView.as_view(), name='detail')	#pk is a fix name
@@ -458,9 +460,14 @@ http://localhost:8000/admin/	#admin ui
 		.create(...)
 		.annotate(...)		# allows to add extra columns, eg. aggregations
 		.count()
+		
 	models.F(colName)		# reference db field
 	models.Case/.When/.Value
-	
+
+	# function get_next_by_{fieldname} available automatically:
+	mymodel = MyModel.objects.all()[0]
+	next_mymodel = mymodel.get_next_by_created().mymodel
+	next_mymodel = mymodel.get_previous_by_created().mymodel
 
 ### define relationship:
 	from django.db import models
@@ -479,7 +486,7 @@ http://localhost:8000/admin/	#admin ui
 	stdlogger.debug("Query %s" % str(all_mymodels_with_subs.query))
 	# You can also use print(all_mymodels_with_subs.query)
 
-## Class based Views with django Mixins:
+## Generic View = Class based Views with django Mixins:
 	# useful Mixins:
 	django.views.generic.detail.SingleObjectTemplateResponseMixin
 	django.views.generic.base.TemplateResponseMixin
@@ -493,7 +500,9 @@ http://localhost:8000/admin/	#admin ui
 	# example mixin usage:
 	from django.views.generic.edit import CreateView
 	from django.contrib.messages.views import SuccessMessageMixin
-	class MyModelCreation(SuccessMessageMixin,CreateView):
+	# in urlpatterns, use it as MyModelCreation.as_view()
+	class MyModelCreation(SuccessMessageMixin,CreateView): # TemplateView also could be used as super
+		template_name = 'my/my.html'
 		model = MyModel
 		form_class = MyModelForm
 		success_url = reverse_lazy('mymodels:index')
@@ -595,3 +604,49 @@ http://localhost:8000/admin/	#admin ui
 				response.data["count"], 3
 			)
 			self.client.force_authenticate(user=None)		# logout
+
+## Forms
+	from django import forms
+	
+	class MyForm(forms.Form):
+		f1 = forms.CharField(required=True) # provides automatic validation
+
+	# Form, connected to a Model:
+	class MyForm(forms.ModelForm):
+		f1 = forms.CharField(required=False)
+		f2 = forms.CharField(required=False, widget=forms.TextInput(attrs={'class':'form-control','placeholder':'write...'}))
+		class Meta:
+			model = MyModel
+			fields = ('f1',) # NOT ('f1')
+		
+### Use the form:
+	class MyView(TemplateView):
+		template_name = "my/my.html"
+
+		def get(self, request):
+			form = MyForm()
+			mymodels = MyModel.objects.all().order_by('-created')
+			return render(request, self.template_name, {'form':form, 'mymodels':mymodels})
+			
+		def post(self, request):
+			form = MyForm(request.POST)
+			if form.is_valid():
+			
+				## handling for ModelForm
+				form.save() # possible if form is a ModelForm
+				mymodel = form.save(commit=False)
+				mymodel.user = request.user
+				
+				t = form.cleaned_data['f1']
+				redirect('myappnamespace:myview') #avoid double submit possibility
+			
+			args = {'form':form, 'text':t}
+			return render(request, self.template_name, args)
+
+### Template:
+	<form method=post>
+		{% csrf_token %}
+		{{ form.errors }}
+		{{ form.as_p }}		# renders the whole form
+		{{ form.f1 }}		# renders only the field
+	</form>

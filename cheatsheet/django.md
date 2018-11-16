@@ -457,6 +457,7 @@ http://localhost:8000/admin/	#admin ui
 		.get_or_create(...)	# return: myModelObj, is_created
 		.order_by('-title')
 		.all()
+		.exclude(id=request.user.id) # = all except me
 		.filter(title=mytitleval, type=mytypeval, groups__name=mynameval).count()
 		.get_for_model(obj)
 		.get(id=myidval)	# throws if not found
@@ -653,3 +654,44 @@ http://localhost:8000/admin/	#admin ui
 		{{ form.as_p }}		# renders the whole form
 		{{ form.f1 }}		# renders only the field
 	</form>
+
+## Configuration:
+### Settings: use /settings/ instead of settings.py
+	mkdir /settings/
+		/settings/__init.py
+		/settings/base.py		# put content of the old ../settings.py here & adjust paths if using __file__!
+		/settings/local.py
+		/settings/dev.py
+			from myapp.settings.base import *
+			try:
+				from myapp.settings.local import *
+			except:
+				pass
+			# override base.py settings here
+			DEBUG = True
+		/settings/prod.py
+			from myapp.settings.base import *
+			# override base.py settings here
+			DEBUG = False
+	$ export DJANGO_SETTINGS_MODULE=myapp.settings.dev
+	/wsgi.py: os.environ.setdefault(DJANGO_SETTINGS_MODULE=myapp.settings.prod)
+
+### Deployment: use env-variables & myapp.settings.prod, e.g. with new values for
+	DEBUG = False # you HAVE to set ALLOWED_HOSTS
+	SECRET_KEY
+	DATABASES
+	ALLOWED_HOSTS = ['*'] # = allow everything
+	
+	$ django-admin check --deploy
+
+### Requirements: list dependencies
+	mkdir /requirements/
+		/requirements/base.txt
+			Django==1.10.7				# example content
+			Pillow==4.1.0				# needed, eg. for the ImageField
+		/requirements/dev.txt			# env specific dependencies
+			-r base.txt
+		/requirements/prod.txt			# env specific dependencies
+			-r base.txt
+
+	$ pip install -r myapp/requirements/dev.txt

@@ -244,6 +244,9 @@ http://localhost:8000/admin/	#admin ui
 	python-memcached	# settings.py: CACHE @vary_on_cookie & @cache_page(60)
 	selenium & mock		# unit & integration tests
 	fabric				# depoyment script: fabfile.py
+	dateparser			# dateparser.parse("1-jan/15")|.parse("1 week and 3 days ago")
+	pymongo				# MongoDB parser
+	urllib2/request		# urllib2.urlopen(url).read()
 
 ## Advanced Issues:
 ### Use nosql

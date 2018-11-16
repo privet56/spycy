@@ -61,7 +61,10 @@
 		#Alternative: if form.validate_on_submit():
 		if request.method == 'POST' and form.validate():
 			name = form.name.data	# or request.form['name']
-			pwd = sha256_crypt.encrypt(str(form.pwd.data)) # alternative: from flask_bcrypt import Bcrypt
+			# alternative: from flask_bcrypt import Bcrypt
+			# alternative: import hashlib & hashlib.sha512(form.pwd.data).hexdigest()
+			# hint: use salt!
+			pwd = sha256_crypt.encrypt(str(form.pwd.data))
 			cur = mysql.connection.cursor()
 			
 			# query example start
@@ -118,15 +121,16 @@
 	from flask_ftw import FlaskForm
 	from flask_ftw.file import FileField, FileAllowed
 	from wtfforms import StringField, SubmitField, BooleanField
+	from wtforms.fields.html5 import EmailField
 	from wtfforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 	class MyForm(FlaskForm):
 		name = StringField('Name', validators=[DataRequired(), Length(min=2, max=22)])
-		mail = StringField('Mail', validators=[DataRequired(), Email()])
+		mail = StringField('Mail', validators=[DataRequired(), Email()]) # or: EmailField
 		pwd1 = StringField('Pwd1', validators=[DataRequired()])
 		pwd2 = StringField('Pwd2', validators=[DataRequired(), EqualTo('pwd1')]) # confirm
 		pict = FileField('prfpic', validators=[FileAllowed(['jpg','png'])])
 		remb = BooleanField('Remember Me')
-		submit = SubmitField('Submit Form')
+		submit = SubmitField('Submit Form', [validators.DataRequired()])
 		def validate_name(self, name):
 			mymodel = MyModel.query.filter_by(name=name.data).first()
 			if mymodel:
@@ -339,6 +343,7 @@
 ### flask-login: the LoginManager
 	$ pip install flask-login
 	from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
+	from flask.ext.login import logout_user # version specific import
 	import secrets
 	login_manager = LoginManager(app)
 	login_manager.login_view = 'login' 		# specify here the login route
@@ -570,3 +575,42 @@
 		response.set_cookie("publication", publication, expires=expires)
 		response.set_cookie("city", city, expires=expires)
 		return response
+
+## MongoDB
+	$ pip install --user pymongo
+	import pymongo
+	from bson.objectid import ObjectId
+	class MongoConnection:
+		def __init__(self):
+			client = pymongo.MongoClient()
+			self.db = client[DATABASE]
+			
+		def get_user(self, email):
+			return self.db.users.find_one({"email": email})
+		def add_user(self, email, salt, hashed):
+			self.db.users.insert({"email": email, "salt": salt, "hashed": hashed})
+		def add_table(self, number, owner):
+			new_id = self.db.tables.insert({"number": number, "owner": owner})
+			return new_id
+		def update_table(self, _id, url):
+			self.db.tables.update({"_id": _id}, {"$set": {"url": url}})
+		def get_tables(self, owner_id):
+			return list(self.db.tables.find({"owner": owner_id}))
+		def get_table(self, table_id):
+			return self.db.tables.find_one({"_id": ObjectId(table_id)})
+		def delete_table(self, table_id):
+			self.db.tables.remove({"_id": ObjectId(table_id)})
+		def add_request(self, _id, time):
+			t = self.get_t(_id)
+			try:
+				self.db.requests.insert({"owner": t['owner'], "t_number": t['number'], "_id": t_id, "time": time})
+				return True
+			except pymongo.errors.DuplicateKeyError:
+				return False
+			
+### Create Indizes:
+	import pymongo
+	client = pymongo.MongoClient()
+	c = client['u']
+	print c.users.create_index("email", unique=True)
+	print c.requests.create_index("t_id", unique=True)

@@ -9,7 +9,7 @@ args==0.1.0               # via clint
 audioread==2.1.5          # via librosa
 backports.csv==1.0.5      # via internetarchive
 beautifulsoup4==4.6.0     # via bs4
-bleach==1.5.0             # via nbconvert, tensorflow-tensorboard
+bleach==3.1.1             # via nbconvert, tensorflow-tensorboard
 boto3==1.5.9              # via smart-open
 boto==2.48.0              # via smart-open
 botocore==1.8.23          # via boto3, s3transfer

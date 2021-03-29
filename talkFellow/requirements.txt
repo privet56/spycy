@@ -72,7 +72,7 @@ plyvel==1.0.4
 prompt-toolkit==1.0.15    # via ipython, jupyter-console
 protobuf==3.5.1           # via tensorflow, tensorflow-tensorboard
 ptyprocess==0.5.2         # via pexpect, terminado
-pygments==2.2.0           # via ipython, jupyter-console, nbconvert, qtconsole
+pygments==2.7.4           # via ipython, jupyter-console, nbconvert, qtconsole
 pyparsing==2.2.0          # via matplotlib
 pyproj==1.9.5.1           # via geopandas
 python-dateutil==2.6.1    # via botocore, jupyter-client, matplotlib, pandas

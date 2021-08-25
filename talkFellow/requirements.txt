@@ -93,7 +93,7 @@ sklearn==0.0
 smart-open==1.5.6         # via gensim
 spotipy==2.4.4
 tensorflow-tensorboard==0.4.0rc3  # via tensorflow
-tensorflow==1.4.1
+tensorflow==2.5.1
 terminado==0.8.1          # via notebook
 testpath==0.3.1           # via nbconvert
 tornado==4.5.3            # via ipykernel, notebook, terminado

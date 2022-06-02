@@ -31,7 +31,7 @@ enum34==1.1.6             # via tensorflow
 fiona==1.7.11.post1       # via geopandas
 gensim==3.2.0
 geopandas==0.3.0
-html5lib==0.9999999       # via bleach, tensorflow-tensorboard
+html5lib==0.99999999       # via bleach, tensorflow-tensorboard
 idna==2.6                 # via requests
 internetarchive==1.7.6
 ipykernel==4.7.0          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole

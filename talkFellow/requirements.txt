@@ -41,7 +41,7 @@ ipywidgets==7.1.0         # via jupyter
 jedi==0.11.1              # via ipython
 jinja2==2.10              # via nbconvert, notebook
 jmespath==0.9.3           # via boto3, botocore
-joblib==0.11              # via librosa
+joblib==1.2.0              # via librosa
 jsonpatch==1.21           # via internetarchive
 jsonpointer==2.0          # via jsonpatch
 jsonschema==2.6.0         # via nbformat

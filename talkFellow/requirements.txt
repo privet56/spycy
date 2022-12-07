@@ -15,7 +15,7 @@ boto==2.48.0              # via smart-open
 botocore==1.8.23          # via boto3, s3transfer
 bs4==0.0.1
 bz2file==0.98             # via smart-open
-certifi==2017.11.5        # via requests
+certifi==2022.12.7        # via requests
 chardet==3.0.4            # via requests
 click-plugins==1.0.3      # via fiona
 click==6.7                # via click-plugins, cligj

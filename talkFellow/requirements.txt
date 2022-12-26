@@ -102,5 +102,5 @@ traitlets==4.3.2          # via ipykernel, ipython, ipywidgets, jupyter-client, 
 urllib3==1.22             # via requests
 wcwidth==0.1.7            # via prompt-toolkit
 werkzeug==0.14.1          # via tensorflow-tensorboard
-wheel==0.30.0             # via tensorflow, tensorflow-tensorboard
+wheel==0.38.1             # via tensorflow, tensorflow-tensorboard
 widgetsnbextension==3.1.0  # via ipywidgets
